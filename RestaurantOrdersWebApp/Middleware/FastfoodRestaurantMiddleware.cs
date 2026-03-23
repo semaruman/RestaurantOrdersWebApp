@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using RestaurantOrdersWebApp.Models;
 
 namespace RestaurantOrdersWebApp.Middleware
 {
@@ -34,7 +35,17 @@ namespace RestaurantOrdersWebApp.Middleware
                 };
                 await httpContext.Response.WriteAsJsonAsync(response);
             }
-            
+            else if (path == "/menu" && method == "GET")
+            {
+                httpContext.Response.ContentType = "application/json";
+                var response = new List<Dish>
+                {
+                    new Dish{Id = 1, Name = "Блюдо первое", Ingredients = "перечисление ингредиентов", Photo = ""}
+                };
+
+                await httpContext.Response.WriteAsJsonAsync(response);
+            }
+
 
             //await _next(httpContext);
         }
