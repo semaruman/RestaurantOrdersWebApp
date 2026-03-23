@@ -5,17 +5,17 @@ var app = builder.Build();
 
 app.Map("/fastfood", appBuilder =>
 {
-    app.UseMiddleware<FastfoodRestaurantMiddleware>();
+    app.UseFastfoodRestaurantMiddleware();
 });
 
 app.Map("/delivery", appBuilder =>
 {
-    app.UseMiddleware<DeliveryRestaurantMiddleware>();
+    app.UseDeliveryRestaurantMiddleware();
 });
 
 app.Map("/premium", appBuilder =>
 {
-    app.UseMiddleware<PremiumRestaurantMiddleware>();
+    app.UsePremiumRestaurantMiddleware();
 });
 
 app.Run(async (context) => await context.Response.WriteAsync("Добро пожаловать"));
