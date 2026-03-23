@@ -14,10 +14,29 @@ namespace RestaurantOrdersWebApp.Middleware
             _next = next;
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext)
         {
+            string path = httpContext.Request.Path.Value?.ToLower() ?? "";
+            string method = httpContext.Request.Method;
 
-            return _next(httpContext);
+            if (path == "" || path == "/")
+            {
+                httpContext.Response.ContentType = "application/json";
+                var response = new
+                {
+                    Name = "Fast-food restaurant!",
+                    Endpoints = new[]
+                    {
+                        "GET /menu - Посмотреть меню", // GET зпрос
+                        "POST /order - Сделать заказ", // POST запрос
+                        "GET /order/{id} - Посмотреть статус зказа", // GET запрос
+                    }
+                };
+                await httpContext.Response.WriteAsJsonAsync(response);
+            }
+            
+
+            //await _next(httpContext);
         }
     }
 
