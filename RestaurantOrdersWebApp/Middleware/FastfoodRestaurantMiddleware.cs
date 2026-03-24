@@ -46,10 +46,10 @@ namespace RestaurantOrdersWebApp.Middleware
 
                 await httpContext.Response.WriteAsJsonAsync(response);
             }
-            else if (path == "order" && method == "POST")
+            else if (path == "/order" && method == "POST")
             {
                 httpContext.Response.ContentType = "application/json";
-                
+
                 using var reader = new StreamReader(httpContext.Request.Body);
                 var json = await reader.ReadToEndAsync();
 
@@ -57,8 +57,10 @@ namespace RestaurantOrdersWebApp.Middleware
 
                 if (order != null)
                 {
+                    // Добавление заказа в БД будет на этой строке
+
                     httpContext.Response.StatusCode = 200;
-                    await httpContext.Response.WriteAsJsonAsync(new {message = "Заказ создан"});
+                    await httpContext.Response.WriteAsJsonAsync(new { message = "Заказ создан" });
                 }
                 else
                 {
@@ -66,9 +68,22 @@ namespace RestaurantOrdersWebApp.Middleware
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Ошибка при создании заказа" });
                 }
             }
+            else if (path == "/order/")
+            {
+                httpContext.Response.ContentType = "application/json";
+                int id = -1;
+                if (path != null && path.StartsWith("/order/") && path.Length > "/order/".Length)
+                {
+                    id = Convert.ToInt32(path.Substring("/order/".Length));
+                }
 
-
-            //await _next(httpContext);
+                if (id != -1)
+                {
+                    // В этой строке будет получение заказа из БД
+                    // А в этой будет отправка статуса заказа
+                }
+                //await _next(httpContext);
+            }
         }
     }
 
