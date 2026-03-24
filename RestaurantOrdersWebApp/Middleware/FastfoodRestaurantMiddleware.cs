@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text.Json;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using RestaurantOrdersWebApp.Models;
@@ -44,6 +45,26 @@ namespace RestaurantOrdersWebApp.Middleware
                 };
 
                 await httpContext.Response.WriteAsJsonAsync(response);
+            }
+            else if (path == "order" && method == "POST")
+            {
+                httpContext.Response.ContentType = "application/json";
+                
+                using var reader = new StreamReader(httpContext.Request.Body);
+                var json = await reader.ReadToEndAsync();
+
+                var order = JsonSerializer.Deserialize<Order>(json);
+
+                if (order != null)
+                {
+                    httpContext.Response.StatusCode = 200;
+                    await httpContext.Response.WriteAsJsonAsync(new {message = "Заказ создан"});
+                }
+                else
+                {
+                    httpContext.Response.StatusCode = 400;
+                    await httpContext.Response.WriteAsJsonAsync(new { message = "Ошибка при создании заказа" });
+                }
             }
 
 
