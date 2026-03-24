@@ -23,7 +23,7 @@ namespace RestaurantOrdersWebApp.Middleware
             string path = httpContext.Request.Path.Value?.ToLower() ?? "";
             string method = httpContext.Request.Method;
 
-            if (path == "" || path == "/")
+            if (path == "" || path == "/" || path == $"/{_name}")
             {
                 httpContext.Response.ContentType = "application/json";
                 var response = new
@@ -38,7 +38,7 @@ namespace RestaurantOrdersWebApp.Middleware
                 };
                 await httpContext.Response.WriteAsJsonAsync(response);
             }
-            else if (path == "/menu" && method == "GET")
+            else if (path == $"/{_name}/menu" && method == "GET")
             {
                 httpContext.Response.ContentType = "application/json";
                 var response = new List<Dish>
@@ -48,7 +48,7 @@ namespace RestaurantOrdersWebApp.Middleware
 
                 await httpContext.Response.WriteAsJsonAsync(response);
             }
-            else if (path == "/order" && method == "POST")
+            else if (path == $"/{_name}/order" && method == "POST")
             {
                 httpContext.Response.ContentType = "application/json";
 
@@ -70,7 +70,7 @@ namespace RestaurantOrdersWebApp.Middleware
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Ошибка при создании заказа" });
                 }
             }
-            else if (path == "/order/")
+            else if (path == $"/{_name}/order/")
             {
                 httpContext.Response.ContentType = "application/json";
                 int id = -1;
