@@ -10,10 +10,12 @@ namespace RestaurantOrdersWebApp.Middleware
     public class RestaurantMiddleware
     {
         private readonly RequestDelegate _next;
+        string _name;
 
         public RestaurantMiddleware(RequestDelegate next, string restaurantName)
         {
             _next = next;
+            _name = restaurantName;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
@@ -26,7 +28,7 @@ namespace RestaurantOrdersWebApp.Middleware
                 httpContext.Response.ContentType = "application/json";
                 var response = new
                 {
-                    Name = "Fast-food restaurant!",
+                    Name = _name,
                     Endpoints = new[]
                     {
                         "GET /menu - Посмотреть меню", // GET зпрос
