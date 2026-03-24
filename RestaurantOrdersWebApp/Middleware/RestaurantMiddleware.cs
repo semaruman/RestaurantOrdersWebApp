@@ -7,11 +7,11 @@ using RestaurantOrdersWebApp.Models;
 namespace RestaurantOrdersWebApp.Middleware
 {
     // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
-    public class FastfoodRestaurantMiddleware
+    public class RestaurantMiddleware
     {
         private readonly RequestDelegate _next;
 
-        public FastfoodRestaurantMiddleware(RequestDelegate next)
+        public RestaurantMiddleware(RequestDelegate next, string restaurantName)
         {
             _next = next;
         }
@@ -88,11 +88,11 @@ namespace RestaurantOrdersWebApp.Middleware
     }
 
     // Extension method used to add the middleware to the HTTP request pipeline.
-    public static class FastfoodRestaurantMiddlewareExtensions
+    public static class RestaurantMiddlewareExtensions
     {
-        public static IApplicationBuilder UseFastfoodRestaurantMiddleware(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseRestaurantMiddleware(this IApplicationBuilder builder, string restaurantName)
         {
-            return builder.UseMiddleware<FastfoodRestaurantMiddleware>();
+            return builder.UseMiddleware<RestaurantMiddleware>(restaurantName);
         }
     }
 }

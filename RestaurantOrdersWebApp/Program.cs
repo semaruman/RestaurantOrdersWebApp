@@ -5,7 +5,7 @@ var app = builder.Build();
 
 app.Map("/fastfood", appBuilder =>
 {
-    app.UseFastfoodRestaurantMiddleware();
+    app.UseRestaurantMiddleware();
 });
 
 app.Map("/delivery", appBuilder =>
