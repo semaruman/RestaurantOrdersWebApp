@@ -6,6 +6,39 @@ namespace RestaurantOrdersWebApp.Services.EF_services
 {
     public class RestaurantService : IRestaurantService
     {
-        
+        public List<Restaurant> GetAllRestaurants()
+        {
+            using var dbContext = new ApplicationDbContext();
+
+            return dbContext.Restaurants.ToList();
+        }
+
+        public Restaurant GetRestaurantByName(string restaurantName)
+        {
+            using var dbContext = new ApplicationDbContext();
+
+            //нахожу ресторан по первичному ключу
+            var restaurant = dbContext.Restaurants.Find(restaurantName);
+
+            return restaurant;
+        }
+
+        public bool AddRestaurant(Restaurant restaurant)
+        {
+
+            using var dbContext = new ApplicationDbContext();
+
+            //если ресторан уже существует, то не добавляю
+            if (dbContext.Restaurants.Find(restaurant.Name) != null)
+            {
+                return false;
+            }
+            else
+            {
+                dbContext.Restaurants.Add(restaurant);
+                dbContext.SaveChanges();
+                return true;
+            }
+        }
     }
 }
