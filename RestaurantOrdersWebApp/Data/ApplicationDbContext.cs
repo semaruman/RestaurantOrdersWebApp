@@ -10,5 +10,16 @@ namespace RestaurantOrdersWebApp.Data
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<Dish> Dishes {  get; set; }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            string connectionString = config.GetConnectionString("DefaultConnection");
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+        }
     }
 }

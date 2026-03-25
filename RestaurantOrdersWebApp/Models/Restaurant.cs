@@ -8,5 +8,6 @@ namespace RestaurantOrdersWebApp.Models
 
         public List<Dish> Dishes { get; set; }
 
+        public List<Order> Orders {  get; set; }
     }
 }
