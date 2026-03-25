@@ -21,5 +21,13 @@ namespace RestaurantOrdersWebApp.Data
             string connectionString = config.GetConnectionString("DefaultConnection");
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Restaurant>(entity =>
+            {
+                entity.HasKey(r => r.Name);
+            });
+        }
     }
 }
