@@ -1,6 +1,9 @@
-﻿namespace RestaurantOrdersWebApp.Data
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace RestaurantOrdersWebApp.Data
 {
-    public class ApplicationDbContext
+    public class ApplicationDbContext : DbContext
     {
+
     }
 }
