@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string Status { get; set; }
+        public string Status { get; set; } // готовится, готов
 
         public Restaurant Restaurant { get; set; }
 

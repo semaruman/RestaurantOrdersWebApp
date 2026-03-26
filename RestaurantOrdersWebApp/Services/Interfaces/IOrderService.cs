@@ -1,0 +1,15 @@
+﻿using RestaurantOrdersWebApp.Models;
+
+namespace RestaurantOrdersWebApp.Services.Interfaces
+{
+    public interface IOrderService
+    {
+        public List<Order> GetAllOrders(string restaurantName);
+
+        public Order GetOrderById(int id);
+
+        public bool AddOrder(Order order);
+
+        public bool RemoveOrder(int id);
+    }
+}
