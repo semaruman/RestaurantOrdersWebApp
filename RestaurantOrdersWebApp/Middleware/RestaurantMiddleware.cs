@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using RestaurantOrdersWebApp.Models;
+using RestaurantOrdersWebApp.Services.Interfaces;
 
 namespace RestaurantOrdersWebApp.Middleware
 {
@@ -10,25 +11,30 @@ namespace RestaurantOrdersWebApp.Middleware
     public class RestaurantMiddleware
     {
         private readonly RequestDelegate _next;
-        string _name;
 
-        public RestaurantMiddleware(RequestDelegate next, string restaurantName)
+        public RestaurantMiddleware(RequestDelegate next)
         {
             _next = next;
-            _name = restaurantName;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext)
+        public async Task InvokeAsync(
+            HttpContext httpContext,
+            IRestaurantContext restaurantContext,
+            IRestaurantService restaurantService
+            )
         {
             string path = httpContext.Request.Path.Value?.ToLower() ?? "";
             string method = httpContext.Request.Method;
 
-            if (path == "" || path == "/" || path == $"/{_name}")
+            //получение текущего ресторана
+            var currentRestaurant = restaurantService.GetRestaurantByName(restaurantContext.RestaurantName);
+
+            if (path == "" || path == "/" || path == $"/{currentRestaurant.Name}")
             {
                 httpContext.Response.ContentType = "application/json";
                 var response = new
                 {
-                    Name = _name,
+                    Name = currentRestaurant.Name,
                     Endpoints = new[]
                     {
                         "GET /menu - Посмотреть меню", // GET зпрос
@@ -38,17 +44,15 @@ namespace RestaurantOrdersWebApp.Middleware
                 };
                 await httpContext.Response.WriteAsJsonAsync(response);
             }
-            else if (path == $"/{_name}/menu" && method == "GET")
+            else if (path == $"/{currentRestaurant.Name}/menu" && method == "GET")
             {
                 httpContext.Response.ContentType = "application/json";
-                var response = new List<Dish>
-                {
-                    new Dish{Id = 1, Name = "Блюдо первое", Ingredients = "перечисление ингредиентов", Photo = ""}
-                };
+
+                var response = currentRestaurant.MenuDishes;
 
                 await httpContext.Response.WriteAsJsonAsync(response);
             }
-            else if (path == $"/{_name}/order" && method == "POST")
+            else if (path == $"/{currentRestaurant.Name}/order" && method == "POST")
             {
                 httpContext.Response.ContentType = "application/json";
 
@@ -60,6 +64,8 @@ namespace RestaurantOrdersWebApp.Middleware
                 if (order != null)
                 {
                     // Добавление заказа в БД будет на этой строке
+                    currentRestaurant.Orders.Add(order);
+                    restaurantService.UpdateRestaurant(currentRestaurant);
 
                     httpContext.Response.StatusCode = 200;
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Заказ создан" });
@@ -70,7 +76,7 @@ namespace RestaurantOrdersWebApp.Middleware
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Ошибка при создании заказа" });
                 }
             }
-            else if (path == $"/{_name}/order/")
+            else if (path == $"/{currentRestaurant.Name}/order/")
             {
                 httpContext.Response.ContentType = "application/json";
                 int id = -1;
@@ -81,8 +87,15 @@ namespace RestaurantOrdersWebApp.Middleware
 
                 if (id != -1)
                 {
-                    // В этой строке будет получение заказа из БД
-                    // А в этой будет отправка статуса заказа
+                    var order = currentRestaurant.Orders.FirstOrDefault(o => o.Id == id);
+                    if (order == null)
+                    {
+                        await httpContext.Response.WriteAsJsonAsync(new { message = "Такого заказа не существует" });
+                    }
+                    else
+                    {
+                        await httpContext.Response.WriteAsJsonAsync(order.Status);
+                    }
                 }
                 //await _next(httpContext);
             }
