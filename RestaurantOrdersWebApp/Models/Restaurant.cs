@@ -6,7 +6,7 @@ namespace RestaurantOrdersWebApp.Models
     {
         public string Name { get; set; }
 
-        public List<Dish> Dishes { get; set; }
+        public List<Dish> MenuDishes { get; set; }
 
         public List<Order> Orders {  get; set; }
     }

@@ -48,7 +48,7 @@ namespace RestaurantOrdersWebApp.Services.EF_services
             var restaurant = dbContext.Restaurants.Find(restaurantP.Name);
 
             restaurant.Orders = restaurantP.Orders;
-            restaurant.Dishes = restaurantP.Dishes;
+            restaurant.MenuDishes = restaurantP.MenuDishes;
 
             dbContext.SaveChanges();
         }
