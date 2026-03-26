@@ -6,6 +6,8 @@ namespace RestaurantOrdersWebApp.Services.Interfaces
     {
         public List<Order> GetAllOrders(string restaurantName);
 
+        public List<Order> GetActiveOrders(string restaurantName);
+
         public Order GetOrderById(int id);
 
         public bool AddOrder(Order order);
