@@ -11,6 +11,6 @@ namespace RestaurantOrdersWebApp.Services.Interfaces
 
         public bool AddRestaurant(Restaurant restaurant);
 
-        public bool
+        public void UpdateRestaurant(Restaurant restaurant);
     }
 }

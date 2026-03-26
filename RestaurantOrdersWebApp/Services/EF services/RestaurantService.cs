@@ -40,5 +40,17 @@ namespace RestaurantOrdersWebApp.Services.EF_services
                 return true;
             }
         }
+
+        public void UpdateRestaurant(Restaurant restaurantP)
+        {
+            using var dbContext = new ApplicationDbContext();
+
+            var restaurant = dbContext.Restaurants.Find(restaurantP.Name);
+
+            restaurant.Orders = restaurantP.Orders;
+            restaurant.Dishes = restaurantP.Dishes;
+
+            dbContext.SaveChanges();
+        }
     }
 }
