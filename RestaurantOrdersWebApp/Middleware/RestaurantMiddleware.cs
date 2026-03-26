@@ -29,7 +29,7 @@ namespace RestaurantOrdersWebApp.Middleware
             //получение текущего ресторана
             var currentRestaurant = restaurantService.GetRestaurantByName(restaurantContext.RestaurantName);
 
-            if (path == "" || path == "/" || path == $"/{currentRestaurant.Name}")
+            if (path == $"/{currentRestaurant.Name}")
             {
                 httpContext.Response.ContentType = "application/json";
                 var response = new

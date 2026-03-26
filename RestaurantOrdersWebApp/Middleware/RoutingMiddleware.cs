@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using RestaurantOrdersWebApp.Services.Interfaces;
 
 namespace RestaurantOrdersWebApp.Middleware
 {
@@ -14,11 +15,12 @@ namespace RestaurantOrdersWebApp.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext, IRestaurantContext restaurantContext)
         {
             string restaurantName = httpContext.Request.Path.Value?.TrimStart('/').Split('/').FirstOrDefault() ?? "default";
-            if (restaurantName != "default")
+            if (restaurantName != "default" && restaurantName != string.Empty)
             {
+                restaurantContext.RestaurantName = restaurantName;
                 await _next(httpContext);
             }
             else
