@@ -10,5 +10,7 @@ namespace RestaurantOrdersWebApp.Services.Interfaces
         public Restaurant GetRestaurantByName(string restaurantName);
 
         public bool AddRestaurant(Restaurant restaurant);
+
+        public bool
     }
 }

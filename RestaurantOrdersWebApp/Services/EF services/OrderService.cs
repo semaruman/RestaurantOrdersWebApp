@@ -28,22 +28,6 @@ namespace RestaurantOrdersWebApp.Services.EF_services
             return dbContext.Orders.AsNoTracking().FirstOrDefault(o => o.Id == id);
         }
 
-        public bool AddOrder(Order order)
-        {
-            try
-            {
-                using var dbContext = new ApplicationDbContext();
-
-                dbContext.Orders.Add(order);
-                dbContext.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public bool RemoveOrder(int id)
         {
             using var dbContext = new ApplicationDbContext();

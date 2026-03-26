@@ -10,8 +10,6 @@ namespace RestaurantOrdersWebApp.Services.Interfaces
 
         public Order GetOrderById(int id);
 
-        public bool AddOrder(Order order);
-
         public bool RemoveOrder(int id);
     }
 }
