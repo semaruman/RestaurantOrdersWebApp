@@ -10,6 +10,7 @@ builder.Services.AddScoped<IOrderService , OrderService>();
 var app = builder.Build();
 
 app.UseRoutingMiddleware();
+app.UseRestaurantMiddleware();
 
 app.Run(async (context) => await context.Response.WriteAsync("Добро пожаловать"));
 

@@ -105,9 +105,9 @@ namespace RestaurantOrdersWebApp.Middleware
     // Extension method used to add the middleware to the HTTP request pipeline.
     public static class RestaurantMiddlewareExtensions
     {
-        public static IApplicationBuilder UseRestaurantMiddleware(this IApplicationBuilder builder, string restaurantName)
+        public static IApplicationBuilder UseRestaurantMiddleware(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<RestaurantMiddleware>(restaurantName);
+            return builder.UseMiddleware<RestaurantMiddleware>();
         }
     }
 }
