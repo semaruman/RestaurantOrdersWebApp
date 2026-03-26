@@ -19,8 +19,7 @@ namespace RestaurantOrdersWebApp.Middleware
             string restaurantName = httpContext.Request.Path.Value?.TrimStart('/').Split('/').FirstOrDefault() ?? "default";
             if (restaurantName != "default")
             {
-                var restaurantMiddleware = new RestaurantMiddleware(_next, restaurantName);
-                await restaurantMiddleware.InvokeAsync(httpContext);
+                await _next(httpContext);
             }
             else
             {
