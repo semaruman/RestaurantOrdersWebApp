@@ -15,10 +15,14 @@ namespace RestaurantOrdersWebApp.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext, IRestaurantContext restaurantContext)
+        public async Task InvokeAsync(
+            HttpContext httpContext, 
+            IRestaurantContext restaurantContext, 
+            IRestaurantService restaurantService)
         {
             string restaurantName = httpContext.Request.Path.Value?.TrimStart('/').Split('/').FirstOrDefault() ?? "default";
-            if (restaurantName != "default" && restaurantName != string.Empty)
+            
+            if (restaurantName != "default" && restaurantName != string.Empty && restaurantService.GetRestaurantByName(restaurantName) != null)
             {
                 restaurantContext.RestaurantName = restaurantName;
                 await _next(httpContext);
