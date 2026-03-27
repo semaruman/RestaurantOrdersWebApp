@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using RestaurantOrdersWebApp.Services.Interfaces;
+using RestaurantOrdersWebApp.Models;
 
 namespace RestaurantOrdersWebApp.Middleware
 {
@@ -22,10 +23,26 @@ namespace RestaurantOrdersWebApp.Middleware
         {
             string restaurantName = httpContext.Request.Path.Value?.TrimStart('/').Split('/').FirstOrDefault() ?? "default";
             
-            if (restaurantName != "default" && restaurantName != string.Empty && restaurantService.GetRestaurantByName(restaurantName) != null)
+            //если название ресторана введено в url и ресторан с таким названием есть в БД, и метод - GET
+            if (restaurantName != "default" && restaurantName != string.Empty && restaurantService.GetRestaurantByName(restaurantName) != null && httpContext.Request.Method == "GET")
             {
                 restaurantContext.RestaurantName = restaurantName;
                 await _next(httpContext);
+            }
+
+            //если название также введено и метод - POST
+            else if (restaurantName != "default" && restaurantName != string.Empty && httpContext.Request.Method == "POST")
+            {
+                httpContext.Response.ContentType = "application/json";
+                if (restaurantService.AddRestaurant(new Restaurant { Name = restaurantName }))
+                {
+                    await httpContext.Response.WriteAsJsonAsync(new { message = "Ресторан добавлен успешно" });
+                }
+                else
+                {
+                    httpContext.Response.StatusCode = 400;
+                    await httpContext.Response.WriteAsJsonAsync(new { message = "Ресторан уже существует" });
+                }
             }
             else
             {
