@@ -43,7 +43,8 @@ namespace RestaurantOrdersWebApp.Middleware
                         "GET /about - Посмотреть описание ресторана",
                         "GET /contacts - Посмотреть контакты ресторана",
                         "GET /reviews - Посмотреть отзывы ресторана",
-                        "POST /reviews/add - Добавить отзыв о ресторане"
+                        "POST /reviews/add - Добавить отзыв о ресторане",
+                        "POST /menu/add - Добавить блюдо в меню"
                     }
                 };
                 await httpContext.Response.WriteAsJsonAsync(response);
@@ -67,8 +68,6 @@ namespace RestaurantOrdersWebApp.Middleware
 
                 if (order != null)
                 {
-                    // Добавление заказа в БД будет на этой строке
-                    currentRestaurant.Orders.Add(order);
                     restaurantService.AddOrder(currentRestaurant, order);
 
                     httpContext.Response.StatusCode = 200;
@@ -129,7 +128,7 @@ namespace RestaurantOrdersWebApp.Middleware
             {
                 httpContext.Response.ContentType = "application/json";
                 using var reader = new StreamReader(httpContext.Request.Body);
-                var json = await reader.ReadToEndAsync();
+                string json = await reader.ReadToEndAsync();
 
                 var review = JsonSerializer.Deserialize<Review>(json);
 
@@ -140,8 +139,30 @@ namespace RestaurantOrdersWebApp.Middleware
                 }
                 else
                 {
-                    currentRestaurant.Reviews.Add(review);
                     restaurantService.AddReview(currentRestaurant, review);
+                    httpContext.Response.StatusCode = 201;
+                    await httpContext.Response.WriteAsJsonAsync(new { message = "Отзыв добавлен" });
+                }
+            }
+            else if (path == $"/{currentRestaurant.Name}/menu/add" && method == "POST")
+            {
+                httpContext.Response.ContentType = "application/json";
+
+                using var reader = new StreamReader(httpContext.Request.Body);
+                string json = await reader.ReadToEndAsync();
+
+                var dish = JsonSerializer.Deserialize<Dish>(json);
+
+                if (dish == null)
+                {
+                    httpContext.Response.StatusCode = 400;
+                    await httpContext.Response.WriteAsJsonAsync(new { Error = "Ошибка при добавлении блюда" });
+                }
+                else
+                {
+                    restaurantService.AddMenuDish(currentRestaurant, dish);
+                    httpContext.Response.StatusCode = 201;
+                    await httpContext.Response.WriteAsJsonAsync(new { message = "Блюдо добавлено успешно" });
                 }
             }
         }

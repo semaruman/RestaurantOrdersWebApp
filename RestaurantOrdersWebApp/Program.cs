@@ -1,5 +1,6 @@
 using RestaurantOrdersWebApp.Data;
 using RestaurantOrdersWebApp.Middleware;
+using RestaurantOrdersWebApp.Models;
 using RestaurantOrdersWebApp.Services;
 using RestaurantOrdersWebApp.Services.EF_services;
 using RestaurantOrdersWebApp.Services.Interfaces;
