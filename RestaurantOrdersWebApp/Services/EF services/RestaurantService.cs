@@ -74,7 +74,7 @@ namespace RestaurantOrdersWebApp.Services.EF_services
         {
             using var dbContext = new ApplicationDbContext();
 
-            return dbContext.Dishes.Where(d => d.RestaurantName == name).ToList();
+            return dbContext.Dishes.Where(d => d.RestaurantName == name && d.OrderId == null).ToList();
         }
     }
 }
