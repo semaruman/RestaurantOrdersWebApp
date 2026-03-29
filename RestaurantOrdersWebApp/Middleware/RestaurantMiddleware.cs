@@ -69,7 +69,7 @@ namespace RestaurantOrdersWebApp.Middleware
                 {
                     // Добавление заказа в БД будет на этой строке
                     currentRestaurant.Orders.Add(order);
-                    restaurantService.UpdateRestaurant(currentRestaurant);
+                    restaurantService.AddOrder(currentRestaurant, order);
 
                     httpContext.Response.StatusCode = 200;
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Заказ создан" });
@@ -80,7 +80,7 @@ namespace RestaurantOrdersWebApp.Middleware
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Ошибка при создании заказа" });
                 }
             }
-            else if (path == $"/{currentRestaurant.Name}/order/")
+            else if (path == $"/{currentRestaurant.Name}/order/" && method == "GET")
             {
                 httpContext.Response.ContentType = "application/json";
                 int id = -1;
@@ -102,6 +102,47 @@ namespace RestaurantOrdersWebApp.Middleware
                     }
                 }
                 //await _next(httpContext);
+            }
+            else if (path == $"/{currentRestaurant.Name}/about" && method == "GET")
+            {
+                httpContext.Response.ContentType = "application/json";
+                string about = currentRestaurant.Description;
+
+                await httpContext.Response.WriteAsJsonAsync(about);
+            }
+            else if (path == $"/{currentRestaurant.Name}/contacts" && method == "GET")
+            {
+                httpContext.Response.ContentType= "application/json";
+                string contacts = currentRestaurant.Contacts;
+
+                await httpContext.Response.WriteAsJsonAsync(contacts);
+            }
+            else if (path == $"/{currentRestaurant.Name}/reviews" && method == "GET")
+            {
+                httpContext.Response.ContentType= "application/json";
+                
+                var reviews = currentRestaurant.Reviews.Select(r => new {r.Rating, r.Text});
+
+                await httpContext.Response.WriteAsJsonAsync(reviews);
+            }
+            else if (path == $"/{currentRestaurant.Name}/reviews/add" && method == "POST")
+            {
+                httpContext.Response.ContentType = "application/json";
+                using var reader = new StreamReader(httpContext.Request.Body);
+                var json = await reader.ReadToEndAsync();
+
+                var review = JsonSerializer.Deserialize<Review>(json);
+
+                if (review == null)
+                {
+                    httpContext.Response.StatusCode = 400;
+                    await httpContext.Response.WriteAsJsonAsync(new {Error = "Ошибка при создании отзыва"});
+                }
+                else
+                {
+                    currentRestaurant.Reviews.Add(review);
+                    restaurantService.AddReview(currentRestaurant, review);
+                }
             }
         }
     }

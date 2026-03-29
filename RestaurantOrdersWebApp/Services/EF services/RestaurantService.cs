@@ -41,15 +41,29 @@ namespace RestaurantOrdersWebApp.Services.EF_services
             }
         }
 
-        public void UpdateRestaurant(Restaurant restaurantP)
+        public void AddReview(Restaurant restaurantP, Review review)
         {
             using var dbContext = new ApplicationDbContext();
+            var restaurant = dbContext.Restaurants.Find(restaurantP.Name);
+            restaurant.Reviews.Add(review);
+            dbContext.SaveChanges();
+        }
 
+        public void AddOrder(Restaurant restaurantP, Order order)
+        {
+            using var dbContext = new ApplicationDbContext();
             var restaurant = dbContext.Restaurants.Find(restaurantP.Name);
 
-            restaurant.Orders = restaurantP.Orders;
-            restaurant.MenuDishes = restaurantP.MenuDishes;
+            restaurant.Orders.Add(order);
+            dbContext.SaveChanges();
+        }
 
+        public void AddMenuDish(Restaurant restaurantP, Dish dish)
+        {
+            using var dbContext = new ApplicationDbContext();
+            var restaurant = dbContext.Restaurants.Find(restaurantP.Name);
+
+            restaurant.MenuDishes.Add(dish);
             dbContext.SaveChanges();
         }
     }
