@@ -16,5 +16,7 @@ namespace RestaurantOrdersWebApp.Services.Interfaces
         public void AddOrder(Restaurant restaurantP, Order order);
 
         public void AddMenuDish(Restaurant restaurantP, Dish dish);
+
+        public List<Dish> GetRestaurantMenu(string name);
     }
 }

@@ -7,10 +7,12 @@
 
         public string Ingredients { get; set; }
 
-        public string Photo {  get; set; }
+        public string Photo { get; set; }
 
+        public string RestaurantName { get; set; }
         public Restaurant Restaurant { get; set; }
 
-        public Order Order { get; set; }
+        public int? OrderId { get; set; }
+        public Order? Order { get; set; }
     }
 }

@@ -53,7 +53,7 @@ namespace RestaurantOrdersWebApp.Middleware
             {
                 httpContext.Response.ContentType = "application/json";
 
-                var response = currentRestaurant.MenuDishes;
+                var response = restaurantService.GetRestaurantMenu(currentRestaurant.Name);
 
                 await httpContext.Response.WriteAsJsonAsync(response);
             }

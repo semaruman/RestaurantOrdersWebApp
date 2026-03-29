@@ -21,10 +21,17 @@ namespace RestaurantOrdersWebApp.Middleware
             IRestaurantContext restaurantContext, 
             IRestaurantService restaurantService)
         {
-            string restaurantName = httpContext.Request.Path.Value?.TrimStart('/').Split('/').FirstOrDefault() ?? "default";
+            string[] segments = httpContext.Request.Path.Value?.TrimStart('/').Split('/');
+            string restaurantName = segments.FirstOrDefault()?? "default";
 
             //если название ресторана введено в url и ресторан с таким названием есть в БД, и метод - GET
             if (restaurantName != "default" && restaurantName != string.Empty && restaurantService.GetRestaurantByName(restaurantName) != null && httpContext.Request.Method == "GET")
+            {
+                restaurantContext.RestaurantName = restaurantName;
+                await _next(httpContext);
+            }
+            //если название ресторана введено в url и ресторан с таким названием есть в БД, и метод - POST, и маршрут не заканчивается на ресторане(значит, идёт post запрос на другой эндпоинт)
+            else if (restaurantName != "default" && restaurantName != string.Empty && restaurantService.GetRestaurantByName(restaurantName) != null && httpContext.Request.Method == "POST" && segments.Length > 1)
             {
                 restaurantContext.RestaurantName = restaurantName;
                 await _next(httpContext);
@@ -48,7 +55,7 @@ namespace RestaurantOrdersWebApp.Middleware
             {
                 httpContext.Response.ContentType = "application/json";
                 httpContext.Response.StatusCode = 400;
-                await httpContext.Response.WriteAsJsonAsync(new {message = "Такого ресторана не существует"});
+                await httpContext.Response.WriteAsJsonAsync(new { message = "Такого ресторана не существует" });
             }
         }
     }

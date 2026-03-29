@@ -15,10 +15,10 @@ namespace RestaurantOrdersWebApp.Models
             get => Reviews.Average(r => r.Rating);
         }
 
-        public List<Review> Reviews { get; set; }
+        public List<Review> Reviews { get; set; } = new List<Review>();
 
-        public List<Dish> MenuDishes { get; set; }
+        public List<Dish> MenuDishes { get; set; } = new List<Dish>();
 
-        public List<Order> Orders {  get; set; }
+        public List<Order> Orders {  get; set; } = new List<Order>();
     }
 }
