@@ -22,7 +22,7 @@ namespace RestaurantOrdersWebApp.Middleware
             IRestaurantService restaurantService)
         {
             string restaurantName = httpContext.Request.Path.Value?.TrimStart('/').Split('/').FirstOrDefault() ?? "default";
-            
+
             //если название ресторана введено в url и ресторан с таким названием есть в БД, и метод - GET
             if (restaurantName != "default" && restaurantName != string.Empty && restaurantService.GetRestaurantByName(restaurantName) != null && httpContext.Request.Method == "GET")
             {
