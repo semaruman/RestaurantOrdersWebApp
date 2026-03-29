@@ -40,6 +40,10 @@ namespace RestaurantOrdersWebApp.Middleware
                         "GET /menu - Посмотреть меню", // GET зпрос
                         "POST /order - Сделать заказ", // POST запрос
                         "GET /order/{id} - Посмотреть статус зказа", // GET запрос
+                        "GET /about - Посмотреть описание ресторана",
+                        "GET /contacts - Посмотреть контакты ресторана",
+                        "GET /reviews - Посмотреть отзывы ресторана",
+                        "POST /reviews/add - Добавить отзыв о ресторане"
                     }
                 };
                 await httpContext.Response.WriteAsJsonAsync(response);
