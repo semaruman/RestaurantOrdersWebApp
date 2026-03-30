@@ -71,7 +71,7 @@ namespace RestaurantOrdersWebApp.Middleware
                     restaurantService.AddOrder(currentRestaurant, order);
 
                     httpContext.Response.StatusCode = 200;
-                    await httpContext.Response.WriteAsJsonAsync(new { message = "Заказ создан", id =  });
+                    await httpContext.Response.WriteAsJsonAsync(new { message = "Заказ создан" });
                 }
                 else
                 {
