@@ -63,9 +63,6 @@ namespace RestaurantOrdersWebApp.Services.EF_services
             using var dbContext = new ApplicationDbContext();
             var restaurant = dbContext.Restaurants.Find(restaurantP.Name);
 
-            dish.Order = null;
-            dish.OrderId = null;
-
             restaurant.MenuDishes.Add(dish);
             dbContext.SaveChanges();
         }
