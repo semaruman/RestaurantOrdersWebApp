@@ -9,6 +9,8 @@
 
         public string Photo { get; set; }
 
+        public double Price { get; set; }
+
         public string RestaurantName { get; set; }
         public Restaurant Restaurant { get; set; }
 
