@@ -22,5 +22,7 @@ namespace RestaurantOrdersWebApp.Services.Interfaces
         public List<Review> GetRestaurantReviews(string name);
 
         public void ChangeRestaurantDescription(string name, string description);
+
+        public void ChangeRestaurantContacts(string name, string contacts);
     }
 }

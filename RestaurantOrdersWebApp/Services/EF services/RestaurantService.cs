@@ -89,5 +89,14 @@ namespace RestaurantOrdersWebApp.Services.EF_services
             restaurant.Description = description;
             dbContext.SaveChanges();
         }
+
+        public void ChangeRestaurantContacts(string name, string contacts)
+        {
+            using var dbContext = new ApplicationDbContext();
+            var restaurant = dbContext.Restaurants.Find(name);
+
+            restaurant.Contacts = contacts;
+            dbContext.SaveChanges();
+        }
     }
 }

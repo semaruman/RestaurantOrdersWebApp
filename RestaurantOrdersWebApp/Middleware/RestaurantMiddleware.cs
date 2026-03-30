@@ -135,6 +135,17 @@ namespace RestaurantOrdersWebApp.Middleware
 
                 await httpContext.Response.WriteAsJsonAsync(contacts);
             }
+            else if (path == $"/{currentRestaurant.Name}/contacts" && method == "POST")
+            {
+                httpContext.Response.ContentType = "application/json";
+
+                string contacts = httpContext.Request.Query["message"];
+
+                restaurantService.ChangeRestaurantDescription(currentRestaurant.Name, contacts);
+
+                httpContext.Response.StatusCode = 200;
+                await httpContext.Response.WriteAsJsonAsync($"Описание изменено на: {contacts}");
+            }
             else if (path == $"/{currentRestaurant.Name}/reviews" && method == "GET")
             {
                 httpContext.Response.ContentType= "application/json";
