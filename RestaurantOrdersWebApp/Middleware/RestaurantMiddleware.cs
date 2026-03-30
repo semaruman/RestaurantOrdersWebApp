@@ -120,7 +120,7 @@ namespace RestaurantOrdersWebApp.Middleware
             {
                 httpContext.Response.ContentType= "application/json";
                 Console.WriteLine(string.Join("!", currentRestaurant.Reviews));
-                var reviews = currentRestaurant.Reviews.Select(r => new {r.Rating, r.Text});
+                var reviews = restaurantService.GetRestaurantReviews(currentRestaurant.Name).Select(r => new {r.Rating, r.Text});
 
                 await httpContext.Response.WriteAsJsonAsync(reviews);
             }
