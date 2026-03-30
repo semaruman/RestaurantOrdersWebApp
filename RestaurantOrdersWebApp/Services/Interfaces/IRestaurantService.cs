@@ -20,5 +20,7 @@ namespace RestaurantOrdersWebApp.Services.Interfaces
         public List<Dish> GetRestaurantMenu(string name);
 
         public List<Review> GetRestaurantReviews(string name);
+
+        public void ChangeRestaurantDescription(string name, string description);
     }
 }

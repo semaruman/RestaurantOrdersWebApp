@@ -42,7 +42,9 @@ namespace RestaurantOrdersWebApp.Middleware
                         "POST /order - Сделать заказ", // POST запрос
                         "GET /order/{id} - Посмотреть статус зказа", // GET запрос
                         "GET /about - Посмотреть описание ресторана",
+                        "POST /about - Добавить описание ресторана",
                         "GET /contacts - Посмотреть контакты ресторана",
+                        "POST /contacts - Добавить контакты ресторана",
                         "GET /reviews - Посмотреть отзывы ресторана",
                         "POST /reviews/add - Добавить отзыв о ресторане",
                         "POST /menu/add - Добавить блюдо в меню"
@@ -114,6 +116,17 @@ namespace RestaurantOrdersWebApp.Middleware
                 string about = currentRestaurant.Description;
 
                 await httpContext.Response.WriteAsJsonAsync(about);
+            }
+            else if (path == $"/{currentRestaurant.Name}/about" && method == "POST")
+            {
+                httpContext.Response.ContentType = "application/json";
+
+                string about = httpContext.Request.Query["message"];
+
+                restaurantService.ChangeRestaurantDescription(currentRestaurant.Name, about);
+
+                httpContext.Response.StatusCode = 200;
+                await httpContext.Response.WriteAsJsonAsync($"Описание изменено на: {about}");
             }
             else if (path == $"/{currentRestaurant.Name}/contacts" && method == "GET")
             {

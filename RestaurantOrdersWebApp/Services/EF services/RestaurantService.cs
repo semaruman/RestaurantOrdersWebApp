@@ -80,5 +80,14 @@ namespace RestaurantOrdersWebApp.Services.EF_services
 
             return dbContext.Reviews.Where(r => r.RestaurantName == name).ToList();
         }
+
+        public void ChangeRestaurantDescription(string name, string description)
+        {
+            using var dbContext = new ApplicationDbContext();
+            var restaurant = dbContext.Restaurants.Find(name);
+
+            restaurant.Description = description;
+            dbContext.SaveChanges();
+        }
     }
 }
