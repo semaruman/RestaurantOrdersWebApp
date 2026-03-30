@@ -20,7 +20,8 @@ namespace RestaurantOrdersWebApp.Middleware
         public async Task InvokeAsync(
             HttpContext httpContext,
             IRestaurantContext restaurantContext,
-            IRestaurantService restaurantService
+            IRestaurantService restaurantService,
+            IOrderService orderService
             )
         {
             string path = httpContext.Request.Path.Value?.ToLower() ?? "";
@@ -79,28 +80,33 @@ namespace RestaurantOrdersWebApp.Middleware
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Ошибка при создании заказа" });
                 }
             }
-            else if (path == $"/{currentRestaurant.Name}/order/" && method == "GET")
+            else if (path.StartsWith($"/{currentRestaurant.Name}/order/") && method == "GET")
             {
                 httpContext.Response.ContentType = "application/json";
                 int id = -1;
-                if (path != null && path.StartsWith("/order/") && path.Length > "/order/".Length)
+                if (path.Length > $"/{currentRestaurant.Name}/order/".Length)
                 {
-                    id = Convert.ToInt32(path.Substring("/order/".Length));
+                    id = Convert.ToInt32(path.Substring($"/{currentRestaurant.Name}/order/".Length));
                 }
 
                 if (id != -1)
-                {
-                    var order = currentRestaurant.Orders.FirstOrDefault(o => o.Id == id);
+                { 
+                    var order = orderService.GetOrderById(id);
                     if (order == null)
                     {
+                        httpContext.Response.StatusCode = 400;
                         await httpContext.Response.WriteAsJsonAsync(new { message = "Такого заказа не существует" });
                     }
                     else
                     {
-                        await httpContext.Response.WriteAsJsonAsync(order.Status);
+                        await httpContext.Response.WriteAsJsonAsync(new { status = order.Status });
                     }
                 }
-                //await _next(httpContext);
+                else
+                {
+                    httpContext.Response.StatusCode = 400;
+                    await httpContext.Response.WriteAsJsonAsync(new { message = "Такого заказа не существует" });
+                }
             }
             else if (path == $"/{currentRestaurant.Name}/about" && method == "GET")
             {
