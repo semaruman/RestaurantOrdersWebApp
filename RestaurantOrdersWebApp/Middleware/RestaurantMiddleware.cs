@@ -88,7 +88,7 @@ namespace RestaurantOrdersWebApp.Middleware
                 {
                     httpContext.Response.StatusCode = 400;
 
-                    _logger.LogInformation("{Date}. Ошибка при создании заказа", DateTime.Now);
+                    _logger.LogWarning("{Date}. Ошибка при создании заказа", DateTime.Now);
 
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Ошибка при создании заказа" });
                 }
@@ -186,12 +186,20 @@ namespace RestaurantOrdersWebApp.Middleware
                 if (review == null)
                 {
                     httpContext.Response.StatusCode = 400;
+
+                    _logger.LogWarning("Ошибка при создании отзыва к ресторану {name}", currentRestaurant.Name);
+
                     await httpContext.Response.WriteAsJsonAsync(new {Error = "Ошибка при создании отзыва"});
                 }
                 else
                 {
                     restaurantService.AddReview(currentRestaurant, review);
                     httpContext.Response.StatusCode = 201;
+
+                    _logger.LogWarning("Отзыв к ресторану {name} добавлен: \n {reviewText}", 
+                        currentRestaurant.Name, review.Text
+                        );
+
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Отзыв добавлен" });
                 }
             }
