@@ -11,10 +11,12 @@ namespace RestaurantOrdersWebApp.Middleware
     public class RestaurantMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<RestaurantMiddleware> _logger;
 
-        public RestaurantMiddleware(RequestDelegate next)
+        public RestaurantMiddleware(RequestDelegate next, ILogger<RestaurantMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(
@@ -74,6 +76,9 @@ namespace RestaurantOrdersWebApp.Middleware
                     restaurantService.AddOrder(currentRestaurant, order);
 
                     httpContext.Response.StatusCode = 200;
+                    _logger.LogInformation("{Date}. Заказ создан. Блюда: {dishList}",
+                        order.CreatedDate, string.Join(", ", order.Dishes.Select(d => d.Name))
+                        );
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Заказ создан" });
                 }
                 else
