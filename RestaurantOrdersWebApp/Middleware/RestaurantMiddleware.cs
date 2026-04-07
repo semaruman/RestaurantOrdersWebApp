@@ -196,7 +196,7 @@ namespace RestaurantOrdersWebApp.Middleware
                     restaurantService.AddReview(currentRestaurant, review);
                     httpContext.Response.StatusCode = 201;
 
-                    _logger.LogWarning("Отзыв к ресторану {name} добавлен: \n {reviewText}", 
+                    _logger.LogInformation("Отзыв к ресторану {name} добавлен: \n {reviewText}", 
                         currentRestaurant.Name, review.Text
                         );
 
@@ -215,12 +215,19 @@ namespace RestaurantOrdersWebApp.Middleware
                 if (dish == null)
                 {
                     httpContext.Response.StatusCode = 400;
+
+                    _logger.LogWarning("Ошибка при добавлении блюда в ресторан {name}", currentRestaurant.Name);
+
                     await httpContext.Response.WriteAsJsonAsync(new { Error = "Ошибка при добавлении блюда" });
                 }
                 else
                 {
                     restaurantService.AddMenuDish(currentRestaurant, dish);
                     httpContext.Response.StatusCode = 201;
+
+                    _logger.LogInformation("Блюдо {dishName} в ресторан {restName} добавлено",
+                        dish.Name, currentRestaurant.Name);
+
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Блюдо добавлено успешно" });
                 }
             }
