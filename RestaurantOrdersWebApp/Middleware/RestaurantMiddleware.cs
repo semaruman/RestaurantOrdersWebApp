@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using RestaurantOrdersWebApp.Models;
 using RestaurantOrdersWebApp.Services.Interfaces;
 
@@ -76,14 +77,19 @@ namespace RestaurantOrdersWebApp.Middleware
                     restaurantService.AddOrder(currentRestaurant, order);
 
                     httpContext.Response.StatusCode = 200;
+
                     _logger.LogInformation("{Date}. Заказ создан. Блюда: {dishList}",
                         order.CreatedDate, string.Join(", ", order.Dishes.Select(d => d.Name))
                         );
+
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Заказ создан" });
                 }
                 else
                 {
                     httpContext.Response.StatusCode = 400;
+
+                    _logger.LogInformation("{Date}. Ошибка при создании заказа", DateTime.Now);
+
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Ошибка при создании заказа" });
                 }
             }
@@ -131,6 +137,11 @@ namespace RestaurantOrdersWebApp.Middleware
                 restaurantService.ChangeRestaurantDescription(currentRestaurant.Name, about);
 
                 httpContext.Response.StatusCode = 200;
+
+                _logger.LogInformation("Описание ресторана {name} изменено на:\n {about}",
+                    currentRestaurant.Name, about
+                    );
+
                 await httpContext.Response.WriteAsJsonAsync($"Описание изменено на: {about}");
             }
             else if (path == $"/{currentRestaurant.Name}/contacts" && method == "GET")
@@ -146,10 +157,15 @@ namespace RestaurantOrdersWebApp.Middleware
 
                 string contacts = httpContext.Request.Query["message"];
 
-                restaurantService.ChangeRestaurantDescription(currentRestaurant.Name, contacts);
+                restaurantService.ChangeRestaurantContacts(currentRestaurant.Name, contacts);
 
                 httpContext.Response.StatusCode = 200;
-                await httpContext.Response.WriteAsJsonAsync($"Описание изменено на: {contacts}");
+
+                _logger.LogInformation("Контакты ресторана {name} изменены на:\n {contacts}",
+                    currentRestaurant.Name, contacts
+                    );
+
+                await httpContext.Response.WriteAsJsonAsync($"Контакты изменены на: {contacts}");
             }
             else if (path == $"/{currentRestaurant.Name}/reviews" && method == "GET")
             {
