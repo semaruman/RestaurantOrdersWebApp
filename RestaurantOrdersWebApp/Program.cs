@@ -13,6 +13,7 @@ builder.Services.AddScoped<IRestaurantContext, RestaurantContext>();
 
 var app = builder.Build();
 
+app.UseLoggingMiddleware();
 app.UseRoutingMiddleware();
 app.UseRestaurantMiddleware();
 
