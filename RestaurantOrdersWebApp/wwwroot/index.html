@@ -11,7 +11,10 @@
     <h2>Выберите ресторан</h2>
     
     <script>
-        
+        async function getAllRestaurants() {
+            const resp = fetch("/getAlRestaurants").then(res => res.json());
+            console.log(resp);
+        }
     </script>
 </body>
 

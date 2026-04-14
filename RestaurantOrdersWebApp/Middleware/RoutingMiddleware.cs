@@ -19,12 +19,25 @@ namespace RestaurantOrdersWebApp.Middleware
         public async Task InvokeAsync(
             HttpContext httpContext, 
             IRestaurantContext restaurantContext, 
-            IRestaurantService restaurantService)
+            IRestaurantService restaurantService,
+            ILogger<RoutingMiddleware> logger
+            )
         {
             string[] segments = httpContext.Request.Path.Value?.TrimStart('/').Split('/');
             string restaurantName = segments.FirstOrDefault()?? "default";
 
+            logger.LogInformation("Название ресторана: {name}", restaurantName);
             //если название ресторана введено в url и ресторан с таким названием есть в БД, и метод - GET
+            if (restaurantName == "getAlRestaurants")
+            {
+                //httpContext.Response.ContentType = "application/json";
+                logger.LogInformation("Получение всех ресторанов");
+                var restaurants = restaurantService.GetAllRestaurants().Select(r => new{r.Name, r.Description, r.Contacts});
+                httpContext.Response.StatusCode = 200;
+                await httpContext.Response.WriteAsJsonAsync(restaurants);
+                return;
+            }
+
             if (restaurantName != "default" && restaurantName != string.Empty && restaurantService.GetRestaurantByName(restaurantName) != null && httpContext.Request.Method == "GET")
             {
                 restaurantContext.RestaurantName = restaurantName;
