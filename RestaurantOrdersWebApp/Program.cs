@@ -17,7 +17,8 @@ builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
-
+app.UseDefaultFiles();
+app.UseStaticFiles();
 //подключаю отлов всех исключений
 app.UseExceptionHandler();
 
