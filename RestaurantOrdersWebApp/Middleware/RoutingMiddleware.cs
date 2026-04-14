@@ -32,7 +32,15 @@ namespace RestaurantOrdersWebApp.Middleware
             {
                 //httpContext.Response.ContentType = "application/json";
                 logger.LogInformation("Получение всех ресторанов");
-                var restaurants = restaurantService.GetAllRestaurants().Select(r => new{r.Name, r.Description, r.Contacts});
+                var restaurants = restaurantService.GetAllRestaurants().Select(r =>
+                {
+                    return new
+                    {
+                        name = r.Name,
+                        description = r.Description,
+                        contacts = r.Contacts
+                    };
+                });
                 httpContext.Response.StatusCode = 200;
                 await httpContext.Response.WriteAsJsonAsync(restaurants);
                 return;
