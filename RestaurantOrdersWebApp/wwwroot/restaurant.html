@@ -17,7 +17,7 @@
             <button onclick="goToMenu()" class="btn btn-secondary me-3">Меню</button>
             <button onclick="goToAbout()" class="btn btn-secondary me-3">О ресторане</button>
             <button onclick="goToContacts()" class="btn btn-secondary me-3">Контакты</button>
-            <button class="btn btn-secondary">Отзывы</button>
+            <button onclick="goToReviews()" class="btn btn-secondary">Отзывы</button>
         </nav>
     </div>
 
@@ -71,6 +71,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             const restaurantName = urlParams.get('name');
             window.location.href = `about_restaurant.html?name=${restaurantName}`;
+        }
+        function goToReviews() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const restaurantName = urlParams.get('name');
+            window.location.href = `restaurant_reviews.html?name=${restaurantName}`;
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
