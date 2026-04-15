@@ -10,15 +10,17 @@
 </head>
 
 <body onload="getRestaurantName(); getMenu()">
-    <div style="text-align: center;">
+    <div style="text-align: center;" class="mb-5">
         <h1 class="d-inline-block">Ресторан - <span id="restaurant-name"></span></h1>
+        <br />
+        <nav>
+            <button onclick="getMenu()" class="btn btn-secondary me-3">Меню</button>
+            <button onclick="goToAbout()" class="btn btn-secondary me-3">О ресторане</button>
+            <button class="btn btn-secondary me-3">Контакты</button>
+            <button class="btn btn-secondary" href="">Отзывы</button>
+        </nav>
     </div>
-    <nav>
-        <button onclick="getMenu()" class="btn btn-secondary">Меню</button>
-        <button onclick="goToAbout()" class="btn btn-secondary">О ресторане</button>
-        <button class="btn btn-secondary">Контакты</button>
-        <button class="btn btn-secondary" href="">Отзывы</button>
-    </nav>
+
 
     <div style="text-align: center;">
         <h2 class="d-inline-block">Меню</h2>
@@ -60,7 +62,7 @@
             });
         }
 
-        function goToAbout(){
+        function goToAbout() {
             const urlParams = new URLSearchParams(window.location.search);
             const restaurantName = urlParams.get('name');
             window.location.href = `about_restaurant.html?name=${restaurantName}`;

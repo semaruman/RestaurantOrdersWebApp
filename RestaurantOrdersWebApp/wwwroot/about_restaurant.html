@@ -10,20 +10,24 @@
 </head>
 
 <body onload="getRestaurantName(); getAbout()">
-    <div style="text-align: center;">
+    <div style="text-align: center;" class="mb-5">
         <h1 class="d-inline-block">Ресторан - <span id="restaurant-name"></span></h1>
+
+        <nav>
+            <button onclick="goToMenu()" class="btn btn-secondary me-3">Меню</button>
+            <button onclick="getAbout()" class="btn btn-secondary me-3">О ресторане</button>
+            <button class="btn btn-secondary me-3">Контакты</button>
+            <button class="btn btn-secondary">Отзывы</button>
+        </nav>
     </div>
-    <nav>
-        <button onclick="goToMenu()" class="btn btn-secondary">Меню</button>
-        <button onclick="getAbout()" class="btn btn-secondary">О ресторане</button>
-        <button class="btn btn-secondary">Контакты</button>
-        <button class="btn btn-secondary">Отзывы</button>
-    </nav>
+
 
     <div style="text-align: center;">
         <h2 class="d-inline-block">О ресторане</h2>
         <br />
-        <div class="card w-75 shadow p-3 d-inline-block"><p id="about-string"></p></div>
+        <div class="card w-75 shadow p-3 d-inline-block">
+            <p id="about-string"></p>
+        </div>
     </div>
 
 
