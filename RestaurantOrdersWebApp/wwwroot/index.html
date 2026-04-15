@@ -29,7 +29,7 @@
             data.forEach(restaurant => {
                 const a = document.createElement('a');
                 a.style.cssText = 'display: block; text-decoration: none; color: inherit;';
-                a.href = '/' + restaurant.name;
+                a.href = 'restaurant.html?name=' + restaurant.name;
 
                 const div = document.createElement('div');
 
