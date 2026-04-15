@@ -14,10 +14,10 @@
         <h1 class="d-inline-block">Ресторан - <span id="restaurant-name"></span></h1>
         <br />
         <nav>
-            <button onclick="getMenu()" class="btn btn-secondary me-3">Меню</button>
+            <button onclick="goToMenu()" class="btn btn-secondary me-3">Меню</button>
             <button onclick="goToAbout()" class="btn btn-secondary me-3">О ресторане</button>
-            <button class="btn btn-secondary me-3">Контакты</button>
-            <button class="btn btn-secondary" href="">Отзывы</button>
+            <button onclick="goToContacts()" class="btn btn-secondary me-3">Контакты</button>
+            <button class="btn btn-secondary">Отзывы</button>
         </nav>
     </div>
 
@@ -60,6 +60,11 @@
                 `;
                 container.appendChild(div);
             });
+        }
+        async function goToContacts() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const restaurantName = urlParams.get('name');
+            window.location.href = `contacts_restaurant.html?name=${restaurantName}`;
         }
 
         function goToAbout() {
