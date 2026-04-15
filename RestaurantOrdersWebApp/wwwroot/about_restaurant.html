@@ -37,6 +37,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const restaurantName = urlParams.get('name');
             document.getElementById('restaurant-name').innerText = restaurantName;
+            document.title = restaurantName;
         }
         async function goToMenu() {
             const urlParams = new URLSearchParams(window.location.search);
