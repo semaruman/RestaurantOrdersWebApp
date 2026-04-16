@@ -52,7 +52,8 @@ namespace RestaurantOrdersWebApp.Middleware
                         "POST /contacts - Добавить контакты ресторана",
                         "GET /reviews - Посмотреть отзывы ресторана",
                         "POST /reviews/add - Добавить отзыв о ресторане",
-                        "POST /menu/add - Добавить блюдо в меню"
+                        "POST /menu/add - Добавить блюдо в меню",
+                        "POST /basket/add?dishId={id блюда} - добавить блюдо в корзину"
                     }
                 };
                 await httpContext.Response.WriteAsJsonAsync(response);
@@ -134,8 +135,19 @@ namespace RestaurantOrdersWebApp.Middleware
                 httpContext.Response.ContentType = "application/json";
 
                 //получаю список id заказов из строки запроса
-                var orderIds = httpContext.Request.Query["idList"].ToString().Split(',').Select(int.Parse).ToList();
+                string query = httpContext.Request.Query["idList"].ToString();
+                _logger.LogInformation("Список ID заказов: " + query);
+                if (string.IsNullOrEmpty(query))
+                {
+                    _logger.LogWarning("Список ID заказов отсутствует!!!");
+                    httpContext.Response.StatusCode = 400;
+                    await httpContext.Response.WriteAsJsonAsync(new { error = "Заказы не найдены" });
+                    return;
+                }
 
+                _logger.LogInformation("Начинаю преобразовывать строку запроса в список чисел");
+                var orderIds = query.Split(',').Select(int.Parse).ToList();
+                
                 var orders = orderService.GetOdersByIds(orderIds);
                 if (orders == null || orders.Count == 0)
                 {
@@ -258,6 +270,17 @@ namespace RestaurantOrdersWebApp.Middleware
 
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Блюдо добавлено успешно" });
                 }
+            }
+            else if (path == $"/{currentRestaurant.Name}/basket/add" && method == "POST")
+            {
+                int dishId = Convert.ToInt32(httpContext.Request.Query["dishId"]);
+
+                List<int> dishesId = httpContext.Session.Get<List<int>>("dishesId") ?? new List<int>();
+                dishesId.Add(dishId);
+
+                httpContext.Session.Set("dishesId", dishesId);
+
+                await httpContext.Response.WriteAsJsonAsync(new { message = "Блюдо добавлено в корзину успешно" });
             }
         }
     }
