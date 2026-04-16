@@ -43,5 +43,28 @@ namespace RestaurantOrdersWebApp.Services.EF_services
                 return false;
             }
         }
+
+        public List<Order> GetOdersByIds(List<int> ids)
+        {
+            using var dbContext = new ApplicationDbContext();
+            HashSet<int> idsSet = ids.ToHashSet();
+
+            var orders = dbContext.Orders.Where(o => idsSet.Contains(o.Id))
+                .Select(o => new Order
+                {
+                    Id = o.Id,
+                    Status = o.Status,
+                    CreatedDate = o.CreatedDate,
+                    //RestaurantName = o.Restaurant.Name,
+                    Dishes = o.Dishes.Select(d => new Dish
+                    {
+                        Name = d.Name,
+                        Photo = d.Photo,
+                        Price = d.Price,
+                    }).ToList(),
+                }).ToList();
+
+            return orders;
+        }
     }
 }

@@ -11,5 +11,7 @@ namespace RestaurantOrdersWebApp.Services.Interfaces
         public Order GetOrderById(int id);
 
         public bool RemoveOrder(int id);
+
+        public List<Order> GetOdersByIds(List<int> ids);
     }
 }
