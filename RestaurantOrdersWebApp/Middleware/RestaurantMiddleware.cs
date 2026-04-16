@@ -277,9 +277,11 @@ namespace RestaurantOrdersWebApp.Middleware
 
                 List<int> dishesId = httpContext.Session.Get<List<int>>("dishesId") ?? new List<int>();
                 dishesId.Add(dishId);
+                _logger.LogInformation("Блюдо с ID={id} добавлено в корзину!", dishId);
 
                 httpContext.Session.Set("dishesId", dishesId);
 
+                _logger.LogInformation("Состояние корзины(id блюд): [{basket}]", string.Join(", ", dishesId));
                 await httpContext.Response.WriteAsJsonAsync(new { message = "Блюдо добавлено в корзину успешно" });
             }
         }
