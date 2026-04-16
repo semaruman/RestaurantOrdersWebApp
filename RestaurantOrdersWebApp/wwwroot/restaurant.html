@@ -60,9 +60,15 @@
                     <p>${dish.Photo}</p>
                     <p>${dish.ingredients}</p>
                     <strong>${dish.price} ₽</strong>
+                    <button onclick="AddToBasket(dish.id)">Добавить в корзину</button>
                 `;
                 container.appendChild(div);
             });
+        }
+        async function AddToBasket(id) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const restaurantName = urlParams.get('name');
+            const response = await fetch(`/${restaurantName}/basket?dishId=${id}`);
         }
         async function goToContacts() {
             const urlParams = new URLSearchParams(window.location.search);
