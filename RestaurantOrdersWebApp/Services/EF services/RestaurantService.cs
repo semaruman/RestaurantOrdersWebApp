@@ -49,13 +49,14 @@ namespace RestaurantOrdersWebApp.Services.EF_services
             dbContext.SaveChanges();
         }
 
-        public void AddOrder(Restaurant restaurantP, Order order)
+        public int AddOrder(Restaurant restaurantP, Order order)
         {
             using var dbContext = new ApplicationDbContext();
             var restaurant = dbContext.Restaurants.Find(restaurantP.Name);
 
             restaurant.Orders.Add(order);
             dbContext.SaveChanges();
+            return order.Id;
         }
 
         public void AddMenuDish(Restaurant restaurantP, Dish dish)

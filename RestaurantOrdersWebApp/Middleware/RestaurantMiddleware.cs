@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using RestaurantOrdersWebApp.Models;
 using RestaurantOrdersWebApp.Services.Interfaces;
+using RestaurantOrdersWebApp.Infrastructure;
 
 namespace RestaurantOrdersWebApp.Middleware
 {
@@ -74,7 +75,12 @@ namespace RestaurantOrdersWebApp.Middleware
 
                 if (order != null)
                 {
-                    restaurantService.AddOrder(currentRestaurant, order);
+                    int orderId = restaurantService.AddOrder(currentRestaurant, order);
+
+                    List<int> ordersId = httpContext.Session.Get<List<int>>("ordersId") ?? new List<int>();
+                    ordersId.Add(orderId);
+
+                    httpContext.Session.Set("ordersId", ordersId);
 
                     httpContext.Response.StatusCode = 200;
 
