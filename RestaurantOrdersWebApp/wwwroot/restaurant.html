@@ -18,7 +18,8 @@
             <button onclick="goToAbout()" class="btn btn-secondary me-3">О ресторане</button>
             <button onclick="goToContacts()" class="btn btn-secondary me-3">Контакты</button>
             <button onclick="goToReviews()" class="btn btn-secondary me-3">Отзывы</button>
-            <button onclick="goToIndex()" class="btn btn-secondary">На главную</button>
+            <button onclick="goToIndex()" class="btn btn-secondary me-3">На главную</button>
+            <button onclick="goToOrders()" class="btn btn-secondary">Заказы</button>
         </nav>
     </div>
 
@@ -78,6 +79,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             const restaurantName = urlParams.get('name');
             window.location.href = `restaurant_reviews.html?name=${restaurantName}`;
+        }
+        function goToOrders() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const restaurantName = urlParams.get('name');
+            window.location.href = `orders.html?name=${restaurantName}`;
         }
         function goToIndex() {
             window.location.href = "index.html";

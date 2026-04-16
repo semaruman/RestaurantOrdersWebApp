@@ -129,7 +129,7 @@ namespace RestaurantOrdersWebApp.Middleware
                 }
             }
 
-            else if (path.StartsWith($"/{currentRestaurant.Name}/orders/") && method == "GET")
+            else if (path.StartsWith($"/{currentRestaurant.Name}/orders") && method == "GET")
             {
                 httpContext.Response.ContentType = "application/json";
 
