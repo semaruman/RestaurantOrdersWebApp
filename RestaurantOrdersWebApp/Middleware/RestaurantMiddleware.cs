@@ -284,6 +284,17 @@ namespace RestaurantOrdersWebApp.Middleware
                 _logger.LogInformation("Состояние корзины(id блюд): [{basket}]", string.Join(", ", dishesId));
                 await httpContext.Response.WriteAsJsonAsync(new { message = "Блюдо добавлено в корзину успешно" });
             }
+            else if (path == $"/{currentRestaurant.Name}/basket" && method == "GET")
+            {
+                List<int> dishesId = httpContext.Session.Get<List<int>>("dishesId") ?? new List<int>();
+                var dishes = restaurantService.GetRestaurantMenu(currentRestaurant.Name)
+                .Where(d => dishesId.Contains(d.Id))
+                .Select(d => new Dish{Id = d.Id, Name = d.Name, Price = d.Price, Photo = d.Photo})
+                .ToList();
+
+                _logger.LogInformation("Состояние корзины(id блюд): [{basket}]", string.Join(", ", dishesId));
+                await httpContext.Response.WriteAsJsonAsync(dishes);
+            }
         }
     }
 
