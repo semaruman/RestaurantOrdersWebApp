@@ -45,6 +45,7 @@ namespace RestaurantOrdersWebApp.Middleware
                         "GET /menu - Посмотреть меню", // GET зпрос
                         "POST /order - Сделать заказ", // POST запрос
                         "GET /order/{id} - Посмотреть статус зказа", // GET запрос
+                        "GET /orders/{idList} - Получить список заказов по списку id",
                         "GET /about - Посмотреть описание ресторана",
                         "POST /about - Добавить описание ресторана",
                         "GET /contacts - Посмотреть контакты ресторана",
@@ -127,6 +128,27 @@ namespace RestaurantOrdersWebApp.Middleware
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Такого заказа не существует" });
                 }
             }
+
+            else if (path.StartsWith($"/{currentRestaurant.Name}/orders/") && method == "GET")
+            {
+                httpContext.Response.ContentType = "application/json";
+
+                //получаю список id заказов из строки запроса
+                var orderIds = httpContext.Request.Query["idList"].ToString().Split(',').Select(int.Parse).ToList();
+
+                var orders = orderService.GetOdersByIds(orderIds);
+                if (orders == null || orders.Count == 0)
+                {
+                    httpContext.Response.StatusCode = 400;
+                    await httpContext.Response.WriteAsJsonAsync(new { error = "Заказы не найдены" });
+                }
+                else
+                {
+                    httpContext.Response.StatusCode = 200;
+                    await httpContext.Response.WriteAsJsonAsync(orders);
+                }
+            }
+
             else if (path == $"/{currentRestaurant.Name}/about" && method == "GET")
             {
                 httpContext.Response.ContentType = "application/json";
