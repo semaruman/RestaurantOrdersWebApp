@@ -9,7 +9,7 @@
     <title>Ресторан - </title>
 </head>
 
-<body onload="getRestaurantName(); getMenu()">
+<body onload="getRestaurantName(); getBasket()">
     <div style="text-align: center;" class="mb-5">
         <h1 class="d-inline-block">Ресторан - <span id="restaurant-name"></span></h1>
         <br />
@@ -20,16 +20,15 @@
             <button onclick="goToReviews()" class="btn btn-secondary me-3">Отзывы</button>
             <button onclick="goToOrders()" class="btn btn-secondary me-3">Заказы</button>
             <button onclick="goToIndex()" class="btn btn-secondary">На главную</button>
-
-            <button onclick="goToBasket()" class="btn btn-secondary" style="position: fixed; bottom: 20%; right: 20%; z-index: 1000;">Корзина</button>
+            
         </nav>
     </div>
 
 
     <div style="text-align: center;">
-        <h2 class="d-inline-block">Меню</h2>
+        <h2 class="d-inline-block">Корзина</h2>
         <br />
-        <div id="dish-list" class="card w-75 shadow p-3 d-inline-block"></div>
+        <div id="basket" class="card w-75 shadow p-3 d-inline-block"></div>
     </div>
 
 
@@ -40,16 +39,16 @@
             document.getElementById('restaurant-name').innerText = restaurantName;
             document.title = restaurantName;
         }
-        async function getMenu() {
+        async function getBasket() {
             const urlParams = new URLSearchParams(window.location.search);
             const restaurantName = urlParams.get('name');
 
-            const response = await fetch(`/${restaurantName}/menu`);
-            const menu = await response.json();
+            const response = await fetch(`/${restaurantName}/basket`);
+            const basket = await response.json();
 
-            const container = document.getElementById('dish-list');
+            const container = document.getElementById('basket');
             container.innerHTML = '';
-            menu.forEach(dish => {
+            basket.forEach(dish => {
                 const div = document.createElement('div');
 
                 div.classList.add('card');
@@ -57,20 +56,20 @@
                 div.classList.add('w-25');
                 div.classList.add('p-2');
 
+                /*
                 const button = document.createElement('button');
-                button.textContent = 'Добавить в корзину';
+                button.textContent = 'Удалить из корзины';
                 button.onclick = () => AddToBasket(dish.id);
                 button.classList.add('btn');
-                button.classList.add('btn-primary');
+                */
 
                 div.innerHTML = `
                     <h3>${dish.name}</h3>
                     <p>${dish.Photo}</p>
-                    <p>${dish.ingredients}</p>
                     <strong>${dish.price} ₽</strong>
                     <br/>
                 `;
-                div.appendChild(button);
+                //div.appendChild(button);
                 container.appendChild(div);
             });
         }
@@ -99,11 +98,6 @@
             const urlParams = new URLSearchParams(window.location.search);
             const restaurantName = urlParams.get('name');
             window.location.href = `orders.html?name=${restaurantName}`;
-        }
-        function goToBasket() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const restaurantName = urlParams.get('name');
-            window.location.href = `basket.html?name=${restaurantName}`;
         }
         function goToIndex() {
             window.location.href = "index.html";
