@@ -20,7 +20,8 @@
             <button onclick="goToReviews()" class="btn btn-secondary me-3">Отзывы</button>
             <button onclick="goToOrders()" class="btn btn-secondary me-3">Заказы</button>
             <button onclick="goToIndex()" class="btn btn-secondary">На главную</button>
-            
+
+            <button onclick="goToBasket()" class="btn btn-secondary" style="position: fixed; bottom: 88.5%; right: 5%; z-index: 1000;">Корзина</button>
         </nav>
     </div>
 
@@ -75,6 +76,12 @@
                 container.appendChild(div);
             });
         }
+        async function goToMenu() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const restaurantName = urlParams.get('name');
+
+            window.location.href = `restaurant.html?name=${restaurantName}`;
+        }
         async function AddToBasket(id) {
             const urlParams = new URLSearchParams(window.location.search);
             const restaurantName = urlParams.get('name');
@@ -100,6 +107,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             const restaurantName = urlParams.get('name');
             window.location.href = `orders.html?name=${restaurantName}`;
+        }
+        function goToBasket() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const restaurantName = urlParams.get('name');
+            window.location.href = `basket.html?name=${restaurantName}`;
         }
         function goToIndex() {
             window.location.href = "index.html";
