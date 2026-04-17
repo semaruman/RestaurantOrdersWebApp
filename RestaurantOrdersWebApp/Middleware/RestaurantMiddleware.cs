@@ -287,8 +287,8 @@ namespace RestaurantOrdersWebApp.Middleware
             else if (path == $"/{currentRestaurant.Name}/basket" && method == "GET")
             {
                 List<int> dishesId = httpContext.Session.Get<List<int>>("dishesId") ?? new List<int>();
-                var dishes = restaurantService.GetRestaurantMenu(currentRestaurant.Name)
-                .Where(d => dishesId.Contains(d.Id))
+                var dishes = dishesId
+                .Select(dId => restaurantService.GetRestaurantDishById(dId))
                 .Select(d => new Dish{Id = d.Id, Name = d.Name, Price = d.Price, Photo = d.Photo})
                 .ToList();
 
