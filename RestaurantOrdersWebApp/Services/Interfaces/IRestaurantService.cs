@@ -24,5 +24,7 @@ namespace RestaurantOrdersWebApp.Services.Interfaces
         public void ChangeRestaurantDescription(string name, string description);
 
         public void ChangeRestaurantContacts(string name, string contacts);
+
+        public Dish GetRestaurantDishById(int dishId);
     }
 }

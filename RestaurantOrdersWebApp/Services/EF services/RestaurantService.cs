@@ -99,5 +99,12 @@ namespace RestaurantOrdersWebApp.Services.EF_services
             restaurant.Contacts = contacts;
             dbContext.SaveChanges();
         }
+
+        public Dish GetRestaurantDishById(int dishId)
+        {
+            using var dbContext = new ApplicationDbContext();
+            var dish = dbContext.Dishes.Find(dishId);
+            return dish;
+        }
     }
 }
