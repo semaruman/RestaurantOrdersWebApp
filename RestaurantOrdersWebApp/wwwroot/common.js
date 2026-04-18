@@ -264,3 +264,27 @@ function goToBasket() {
 function goToIndex() {
     window.location.href = "index.html";
 }
+
+
+//Функциия для создания заказа
+async function CreateOrder(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const restaurantName = urlParams.get('name');
+
+    const dishesResponse = await fetch(`/${restaurantName}/basket`);
+    const dishes = await dishesResponse.json();
+
+    const orderData = {
+        Status: "готовится",
+        Dishes: dishes
+    }
+
+    const response = await fetch(`/${restaurantName}/order`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+      });
+}
