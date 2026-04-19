@@ -144,21 +144,20 @@ namespace RestaurantOrdersWebApp.Middleware
             {
                 httpContext.Response.ContentType = "application/json";
 
-                //получаю список id заказов из строки запроса
-                string query = httpContext.Request.Query["idList"].ToString();
-                _logger.LogInformation("Список ID заказов: " + query);
-                if (string.IsNullOrEmpty(query))
+                //получаю список id заказов из сессии
+                List<int>? ordersId = httpContext.Session.Get<List<int>>("ordersId");
+
+                
+                if (ordersId == null || ordersId.Count() == 0)
                 {
                     _logger.LogWarning("Список ID заказов отсутствует!!!");
                     httpContext.Response.StatusCode = 400;
                     await httpContext.Response.WriteAsJsonAsync(new { error = "Заказы не найдены" });
                     return;
                 }
+                _logger.LogInformation("Список ID заказов: " + string.Join(", ", ordersId));
 
-                _logger.LogInformation("Начинаю преобразовывать строку запроса в список чисел");
-                var orderIds = query.Split(',').Select(int.Parse).ToList();
-
-                var orders = orderService.GetOdersByIds(orderIds);
+                var orders = orderService.GetOdersByIds(ordersId);
                 if (orders == null || orders.Count == 0)
                 {
                     httpContext.Response.StatusCode = 400;
