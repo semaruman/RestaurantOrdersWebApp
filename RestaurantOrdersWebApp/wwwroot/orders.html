@@ -11,6 +11,27 @@
 
 <body onload="getOrders()">
 
+    <div style="text-align: center;" class="mb-5">
+        <h1 class="d-inline-block">Ресторан - <span id="restaurant-name"></span></h1>
+        <br />
+        <nav>
+            <button onclick="goToMenu()" class="btn btn-secondary me-3">Меню</button>
+            <button onclick="goToAbout()" class="btn btn-secondary me-3">О ресторане</button>
+            <button onclick="goToContacts()" class="btn btn-secondary me-3">Контакты</button>
+            <button onclick="goToReviews()" class="btn btn-secondary me-3">Отзывы</button>
+            <button onclick="goToOrders()" class="btn btn-secondary me-3">Заказы</button>
+            <button onclick="goToIndex()" class="btn btn-secondary">На главную</button>
+
+            <button onclick="goToBasket()" class="btn btn-secondary"
+                style="position: fixed; bottom: 88.5%; right: 5%; z-index: 1000;">Корзина</button>
+        </nav>
+    </div>
+
+    <div style="text-align: center;">
+        <h2 class="d-inline-block">Заказы</h2>
+        <br />
+        <div id="orders" class="card w-75 shadow p-3 d-inline-block"></div>
+    </div>
     
 
 

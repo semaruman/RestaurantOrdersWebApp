@@ -130,35 +130,32 @@ async function getOrders() {
     const urlParams = new URLSearchParams(window.location.search);
     const restaurantName = urlParams.get('name');
 
-    const ordersIdList = JSON.parse(sessionStorage.getItem('ordersId') || '[]');
-    const queryParams = new URLSearchParams();
-    queryParams.append('idList', ordersIdList.join(','))
+    const response = await fetch(`/${restaurantName}/orders`);
+    const data = await response.json();
 
-    var response = fetch(`/${restaurantName}/orders?${queryParams.toString()}`);
-    var data = response.json();
+    const container = document.getElementById('orders');
+    container.innerHTML = '';
 
     data.forEach(order => {
-        const a = document.createElement('a');
-        a.style.cssText = 'display: block; text-decoration: none; color: inherit;';
-        a.href = 'restaurant.html?name=' + restaurant.name;
-
         const div = document.createElement('div');
 
         div.classList.add('card');
         div.classList.add('d-inline-block');
         div.classList.add('w-25');
+        div.classList.add('p-2');
+        div.classList.add('mb-2');
+        div.classList.add('me-2');
 
         div.innerHTML = `
                     <h3>${order.createdDate}</h3>
                     <h2>Статус: ${order.status}</h2>
-                    <p>${order.Price} Р</p>
+                    <p>${order.price} Р</p>
                     <p>Блюда:</p>
                     <div>
                     </div>
                 `;
 
-        a.appendChild(div);
-        container.appendChild(a);
+        container.appendChild(div);
     })
 }
 
