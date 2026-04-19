@@ -147,8 +147,8 @@ async function getOrders() {
         div.classList.add('me-2');
 
         div.innerHTML = `
-                    <h3>${order.createdDate}</h3>
-                    <h2>Статус: ${order.status}</h2>
+                    <strong>${new Date(order.createdDate).toLocaleString()}</strong>
+                    <p>Статус: ${order.status}</p>
                     <p>${order.price} Р</p>
                     <p>Блюда:</p>
                     <div>
