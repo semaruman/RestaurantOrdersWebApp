@@ -267,7 +267,7 @@ function goToIndex() {
 
 
 //Функциия для создания заказа
-async function CreateOrder(){
+async function CreateOrder() {
     const urlParams = new URLSearchParams(window.location.search);
     const restaurantName = urlParams.get('name');
 
@@ -282,9 +282,9 @@ async function CreateOrder(){
     const response = await fetch(`/${restaurantName}/order`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         },
         body: JSON.stringify(orderData)
-      });
+    });
 }

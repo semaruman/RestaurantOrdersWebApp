@@ -68,15 +68,25 @@ namespace RestaurantOrdersWebApp.Middleware
             }
             else if (path == $"/{currentRestaurant.Name}/order" && method == "POST")
             {
+                _logger.LogInformation("Началось создание заказа");
                 httpContext.Response.ContentType = "application/json";
 
                 using var reader = new StreamReader(httpContext.Request.Body);
                 var json = await reader.ReadToEndAsync();
+                _logger.LogInformation("json: {json}", json);
 
                 var order = JsonSerializer.Deserialize<Order>(json);
 
+
+
                 if (order != null)
                 {
+                    var dishIds = string.Join("; ", order.Dishes.Select(d => d.Id));
+                    _logger.LogInformation("список ID полученных блюд в заказе: {idList}", dishIds);
+                    order.Dishes.Clear();
+
+                    order.DishesIds = dishIds;
+
                     int orderId = restaurantService.AddOrder(currentRestaurant, order);
 
                     List<int> ordersId = httpContext.Session.Get<List<int>>("ordersId") ?? new List<int>();
@@ -86,8 +96,8 @@ namespace RestaurantOrdersWebApp.Middleware
 
                     httpContext.Response.StatusCode = 200;
 
-                    _logger.LogInformation("{Date}. Заказ создан. Блюда: {dishList}",
-                        order.CreatedDate, string.Join(", ", order.Dishes.Select(d => d.Name))
+                    _logger.LogInformation("{Date}. Заказ под номером {orderID} создан. ID Блюд: {dishList}",
+                        order.CreatedDate, orderId, order.DishesIds
                         );
 
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Заказ создан" });
@@ -111,7 +121,7 @@ namespace RestaurantOrdersWebApp.Middleware
                 }
 
                 if (id != -1)
-                { 
+                {
                     var order = orderService.GetOrderById(id);
                     if (order == null)
                     {
@@ -147,7 +157,7 @@ namespace RestaurantOrdersWebApp.Middleware
 
                 _logger.LogInformation("Начинаю преобразовывать строку запроса в список чисел");
                 var orderIds = query.Split(',').Select(int.Parse).ToList();
-                
+
                 var orders = orderService.GetOdersByIds(orderIds);
                 if (orders == null || orders.Count == 0)
                 {
@@ -186,7 +196,7 @@ namespace RestaurantOrdersWebApp.Middleware
             }
             else if (path == $"/{currentRestaurant.Name}/contacts" && method == "GET")
             {
-                httpContext.Response.ContentType= "application/json";
+                httpContext.Response.ContentType = "application/json";
                 string contacts = currentRestaurant.Contacts;
 
                 await httpContext.Response.WriteAsJsonAsync(contacts);
@@ -209,9 +219,9 @@ namespace RestaurantOrdersWebApp.Middleware
             }
             else if (path == $"/{currentRestaurant.Name}/reviews" && method == "GET")
             {
-                httpContext.Response.ContentType= "application/json";
+                httpContext.Response.ContentType = "application/json";
                 Console.WriteLine(string.Join("!", currentRestaurant.Reviews));
-                var reviews = restaurantService.GetRestaurantReviews(currentRestaurant.Name).Select(r => new {r.Rating, r.Text});
+                var reviews = restaurantService.GetRestaurantReviews(currentRestaurant.Name).Select(r => new { r.Rating, r.Text });
 
                 await httpContext.Response.WriteAsJsonAsync(reviews);
             }
@@ -229,14 +239,14 @@ namespace RestaurantOrdersWebApp.Middleware
 
                     _logger.LogWarning("Ошибка при создании отзыва к ресторану {name}", currentRestaurant.Name);
 
-                    await httpContext.Response.WriteAsJsonAsync(new {Error = "Ошибка при создании отзыва"});
+                    await httpContext.Response.WriteAsJsonAsync(new { Error = "Ошибка при создании отзыва" });
                 }
                 else
                 {
                     restaurantService.AddReview(currentRestaurant, review);
                     httpContext.Response.StatusCode = 201;
 
-                    _logger.LogInformation("Отзыв к ресторану {name} добавлен: \n {reviewText}", 
+                    _logger.LogInformation("Отзыв к ресторану {name} добавлен: \n {reviewText}",
                         currentRestaurant.Name, review.Text
                         );
 
@@ -289,7 +299,7 @@ namespace RestaurantOrdersWebApp.Middleware
                 List<int> dishesId = httpContext.Session.Get<List<int>>("dishesId") ?? new List<int>();
                 var dishes = dishesId
                 .Select(dId => restaurantService.GetRestaurantDishById(dId))
-                .Select(d => new Dish{Id = d.Id, Name = d.Name, Price = d.Price, Photo = d.Photo})
+                .Select(d => new Dish { Id = d.Id, Name = d.Name, Price = d.Price, Photo = d.Photo, Ingredients = d.Ingredients })
                 .ToList();
 
                 _logger.LogInformation("Состояние корзины(id блюд): [{basket}]", string.Join(", ", dishesId));

@@ -11,6 +11,8 @@
             get => Dishes.Sum(d => d.Price);
         }
 
+        public string DishesIds { get; set; } //список id блюд через '; '
+
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
         public Restaurant Restaurant { get; set; }

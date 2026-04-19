@@ -10,6 +10,32 @@
 </head>
 
 <body onload="getRestaurantName(); getBasket()">
+
+    <script>
+        async function CreateOrder() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const restaurantName = urlParams.get('name');
+
+            const dishesResponse = await fetch(`/${restaurantName}/basket`);
+            const dishes = await dishesResponse.json();
+
+            const orderData = {
+                Status: "готовится",
+                Dishes: dishes
+            }
+
+            const response = await fetch(`/${restaurantName}/order`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            });
+        }
+    </script>
+
+
     <div style="text-align: center;" class="mb-5">
         <h1 class="d-inline-block">Ресторан - <span id="restaurant-name"></span></h1>
         <br />
@@ -21,7 +47,8 @@
             <button onclick="goToOrders()" class="btn btn-secondary me-3">Заказы</button>
             <button onclick="goToIndex()" class="btn btn-secondary">На главную</button>
 
-            <button onclick="goToBasket()" class="btn btn-secondary" style="position: fixed; bottom: 88.5%; right: 5%; z-index: 1000;">Корзина</button>
+            <button onclick="goToBasket()" class="btn btn-secondary"
+                style="position: fixed; bottom: 88.5%; right: 5%; z-index: 1000;">Корзина</button>
         </nav>
     </div>
 
@@ -30,6 +57,7 @@
         <h2 class="d-inline-block">Корзина</h2>
         <br />
         <div id="basket" class="card w-75 shadow p-3 d-inline-block"></div>
+        <br />
         <button onclick="CreateOrder()">Сделать заказ</button>
     </div>
 
