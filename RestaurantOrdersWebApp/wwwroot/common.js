@@ -146,10 +146,12 @@ async function getOrders() {
         div.classList.add('mb-2');
         div.classList.add('me-2');
 
+        const totalPrice = order.dishes.reduce((sum, dish) => sum + Number(dish.price), 0);
+
         div.innerHTML = `
                     <strong>${new Date(order.createdDate).toLocaleString()}</strong>
                     <p>Статус: ${order.status}</p>
-                    <p>${order.price} Р</p>
+                    <p>${totalPrice} ₽</p>
                     <p>Блюда:</p>
                     <div>
                     </div>

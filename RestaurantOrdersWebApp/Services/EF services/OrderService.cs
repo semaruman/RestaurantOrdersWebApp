@@ -49,14 +49,25 @@ namespace RestaurantOrdersWebApp.Services.EF_services
             using var dbContext = new ApplicationDbContext();
             HashSet<int> idsSet = ids.ToHashSet();
 
-            var orders = dbContext.Orders.Where(o => idsSet.Contains(o.Id))
+            //загружаю заказы в память
+            var allOrders = dbContext.Orders.AsNoTracking().Where(o => idsSet.Contains(o.Id)).ToList();
+
+            var orders = allOrders
                 .Select(o => new Order
                 {
                     Id = o.Id,
                     Status = o.Status,
                     CreatedDate = o.CreatedDate,
                     //RestaurantName = o.Restaurant.Name,
-                    Dishes = o.Dishes.Select(d => new Dish
+
+                    //получаю список блюд. У заказа есть строка, где id блюд записаны через '; '
+                    //я разбиваю эту строку на массив id-шников, потом для каждого id нахожу соответствующее блюдо.
+                    //далее из каждого блюда выбираю название, фото, цену
+                    Dishes = o.DishesIds.Split("; ", StringSplitOptions.RemoveEmptyEntries).ToList().Select(dishId =>
+                    {
+                        var dish = dbContext.Dishes.Find(Convert.ToInt32(dishId));
+                        return dish;
+                    }).Select(d => new Dish
                     {
                         Name = d.Name,
                         Photo = d.Photo,
