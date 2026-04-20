@@ -147,14 +147,15 @@ async function getOrders() {
         div.classList.add('me-2');
 
         const totalPrice = order.dishes.reduce((sum, dish) => sum + Number(dish.price), 0);
+        
+        const dishList = order.dishes.map(d => d.name).join(', ');
 
         div.innerHTML = `
                     <strong>${new Date(order.createdDate).toLocaleString()}</strong>
                     <p>Статус: ${order.status}</p>
-                    <p>${totalPrice} ₽</p>
+                    <strong>${totalPrice} ₽</strong>
                     <p>Блюда:</p>
-                    <div>
-                    </div>
+                    <p>${dishList}</p>
                 `;
 
         container.appendChild(div);
