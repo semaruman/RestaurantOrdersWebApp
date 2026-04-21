@@ -288,3 +288,7 @@ async function CreateOrder() {
         body: JSON.stringify(orderData)
     });
 }
+
+async function goToAdmin() {
+    window.location.href = "admin.html";
+}
