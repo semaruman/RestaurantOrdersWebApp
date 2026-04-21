@@ -292,3 +292,7 @@ async function CreateOrder() {
 async function goToAdmin() {
     window.location.href = "admin.html";
 }
+
+async function goToAddRestaurant() {
+    window.location.href = "add_restaurant.html";
+}
