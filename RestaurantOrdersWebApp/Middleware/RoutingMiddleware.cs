@@ -26,6 +26,11 @@ namespace RestaurantOrdersWebApp.Middleware
             string[] segments = httpContext.Request.Path.Value?.TrimStart('/').Split('/');
             string restaurantName = segments.FirstOrDefault()?? "default";
 
+            if (restaurantName == "favicon.ico")
+            {
+                return;
+            }
+
             logger.LogInformation("Название ресторана: {name}", restaurantName);
             //если название ресторана введено в url и ресторан с таким названием есть в БД, и метод - GET
             if (restaurantName == "getAlRestaurants")

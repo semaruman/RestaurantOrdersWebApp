@@ -18,12 +18,18 @@ namespace RestaurantOrdersWebApp.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            _logger.LogInformation("Отправлен запрос {method}: {path}", 
-                httpContext.Request.Method, httpContext.Request.Path
-                );
+            if (httpContext.Request.Path != "/favicon.ico")
+            {
+                _logger.LogInformation("Отправлен запрос {method}: {path}",
+                    httpContext.Request.Method, httpContext.Request.Path
+                    );
+            }
             await _next(httpContext);
 
-            _logger.LogInformation("Получен ответ (путь: {path}). Статус: {status}",httpContext.Request.Path, httpContext.Response.StatusCode);
+            if (httpContext.Request.Path != "/favicon.ico")
+            {
+                _logger.LogInformation("Получен ответ (путь: {path}). Статус: {status}", httpContext.Request.Path, httpContext.Response.StatusCode);
+            }
         }
     }
 
