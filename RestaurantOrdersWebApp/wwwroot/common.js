@@ -216,6 +216,8 @@ async function getReviews() {
         div.classList.add('d-inline-block');
         div.classList.add('w-25');
         div.classList.add('p-2');
+        div.classList.add('mb-2');
+        div.classList.add('me-2');
 
         div.innerHTML = `
                     <p>${review.text}</p>
