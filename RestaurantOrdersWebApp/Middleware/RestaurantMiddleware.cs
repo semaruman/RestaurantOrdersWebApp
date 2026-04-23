@@ -258,7 +258,7 @@ namespace RestaurantOrdersWebApp.Middleware
 
                 using var reader = new StreamReader(httpContext.Request.Body);
                 string json = await reader.ReadToEndAsync();
-
+                Console.WriteLine(json);
                 var dish = JsonSerializer.Deserialize<Dish>(json);
 
                 if (dish == null)

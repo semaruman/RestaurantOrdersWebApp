@@ -8,18 +8,28 @@ async function getAllRestaurants() {
     const data = await response.json();
 
     const container = document.getElementById('restaurants-list');
+
+
     container.innerHTML = '';
 
     data.forEach(restaurant => {
         const a = document.createElement('a');
-        a.style.cssText = 'display: block; text-decoration: none; color: inherit;';
+
+        a.style.cssText = 'text-decoration: none; color: inherit;';
         a.href = 'restaurant.html?name=' + restaurant.name;
 
         const div = document.createElement('div');
 
+
+
+        div.style.cssText = 'height: 150px;';
+
         div.classList.add('card');
         div.classList.add('d-inline-block');
         div.classList.add('w-25');
+        div.classList.add('p-2');
+        div.classList.add('mb-2');
+        div.classList.add('me-2');
 
         div.innerHTML = `
                     <h3>${restaurant.name}</h3>
@@ -295,4 +305,12 @@ async function goToAdmin() {
 
 async function goToAddRestaurant() {
     window.location.href = "add_restaurant.html";
+}
+
+async function goToEditRestaurant() {
+    window.location.href = "edit_restaurant.html";
+}
+
+async function goToAddRestaurantDish() {
+    window.location.href = "add_restaurant_dish.html";
 }
