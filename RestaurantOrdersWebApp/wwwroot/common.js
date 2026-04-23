@@ -314,3 +314,7 @@ async function goToEditRestaurant() {
 async function goToAddRestaurantDish() {
     window.location.href = "add_restaurant_dish.html";
 }
+
+async function goToAddRestaurantAbout() {
+    window.location.href = "add_restaurant_about.html";
+}
