@@ -249,6 +249,7 @@ namespace RestaurantOrdersWebApp.Middleware
                 using var reader = new StreamReader(httpContext.Request.Body);
                 string json = await reader.ReadToEndAsync();
 
+                _logger.LogInformation("json при создании отзыва: {json}", json);
                 var review = JsonSerializer.Deserialize<Review>(json);
 
                 if (review == null)

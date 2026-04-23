@@ -322,3 +322,9 @@ async function goToAddRestaurantAbout() {
 async function goToAddRestaurantContacts() {
     window.location.href = "add_restaurant_contacts.html";
 }
+
+async function goToAddReview(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const restaurantName = urlParams.get('name');
+    window.location.href = `add_review.html?name=${restaurantName}`;
+}

@@ -21,8 +21,13 @@
             <button onclick="goToOrders()" class="btn btn-secondary me-3">Заказы</button>
             <button onclick="goToIndex()" class="btn btn-secondary">На главную</button>
 
-            <button onclick="goToBasket()" class="btn btn-secondary" style="position: fixed; bottom: 88.5%; right: 5%; z-index: 1000;">Корзина</button>
+            <button onclick="goToBasket()" class="btn btn-secondary"
+                style="position: fixed; bottom: 88.5%; right: 5%; z-index: 1000;">Корзина</button>
         </nav>
+    </div>
+
+    <div style="text-align: center;" class="mb-5">
+        <button onclick="goToAddReview()" class="btn btn-primary">Оставить отзыв</button>
     </div>
 
 
@@ -31,6 +36,8 @@
         <br />
         <div id="reviews-list" class="card w-75 shadow p-3 d-inline-block"></div>
     </div>
+
+
 
 
     <script src="common.js"></script>
