@@ -28,11 +28,23 @@ namespace RestaurantOrdersWebApp.Middleware
             IOrderService orderService
             )
         {
-            string path = httpContext.Request.Path.Value?.ToLower() ?? "";
+            string path = httpContext.Request.Path.Value ?? "";
             string method = httpContext.Request.Method;
 
             //получение текущего ресторана
             var currentRestaurant = restaurantService.GetRestaurantByName(restaurantContext.RestaurantName);
+
+            if (currentRestaurant == null)
+            {
+                httpContext.Response.ContentType = "application/json";
+                httpContext.Response.StatusCode = 404;
+                await httpContext.Response.WriteAsJsonAsync("Ресторан не найден!!!");
+                return;
+            }
+            else
+            {
+                _logger.LogInformation("Текущий ресторан: {name}", currentRestaurant.Name);
+            }
 
             if (path == $"/{currentRestaurant.Name}")
             {
@@ -172,6 +184,7 @@ namespace RestaurantOrdersWebApp.Middleware
 
             else if (path == $"/{currentRestaurant.Name}/about" && method == "GET")
             {
+                Console.WriteLine($"!!!!!!!!!!!!!!");
                 httpContext.Response.ContentType = "application/json";
                 string about = currentRestaurant.Description;
 
@@ -182,6 +195,12 @@ namespace RestaurantOrdersWebApp.Middleware
                 httpContext.Response.ContentType = "application/json";
 
                 string about = httpContext.Request.Query["message"];
+
+
+                if (string.IsNullOrEmpty(about))
+                {
+                    _logger.LogWarning("Описание не передано!");
+                }
 
                 restaurantService.ChangeRestaurantDescription(currentRestaurant.Name, about);
 

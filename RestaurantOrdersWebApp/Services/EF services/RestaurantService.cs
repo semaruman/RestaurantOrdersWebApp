@@ -6,6 +6,11 @@ namespace RestaurantOrdersWebApp.Services.EF_services
 {
     public class RestaurantService : IRestaurantService
     {
+        ILogger<RestaurantService> _logger;
+        public RestaurantService(ILogger<RestaurantService> logger)
+        {
+            _logger = logger;
+        }
         public List<Restaurant> GetAllRestaurants()
         {
             using var dbContext = new ApplicationDbContext();
@@ -87,7 +92,13 @@ namespace RestaurantOrdersWebApp.Services.EF_services
             using var dbContext = new ApplicationDbContext();
             var restaurant = dbContext.Restaurants.Find(name);
 
+            if (restaurant == null)
+            {
+                _logger.LogWarning("Ресторана {name} не существует!", name);
+            }
+
             restaurant.Description = description;
+            _logger.LogInformation("Описание ресторана {name} изменено на:\n\t{about}", name, restaurant.Description);
             dbContext.SaveChanges();
         }
 
