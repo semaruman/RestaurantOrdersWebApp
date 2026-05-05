@@ -17,14 +17,14 @@ namespace RestaurantOrdersWebApp.Middleware
         }
 
         public async Task InvokeAsync(
-            HttpContext httpContext, 
-            IRestaurantContext restaurantContext, 
+            HttpContext httpContext,
+            IRestaurantContext restaurantContext,
             IRestaurantService restaurantService,
             ILogger<RoutingMiddleware> logger
             )
         {
             string[] segments = httpContext.Request.Path.Value?.TrimStart('/').Split('/');
-            string restaurantName = segments.FirstOrDefault()?? "default";
+            string restaurantName = segments.FirstOrDefault() ?? "default";
 
             if (restaurantName == "favicon.ico")
             {
@@ -67,13 +67,17 @@ namespace RestaurantOrdersWebApp.Middleware
             else if (restaurantName != "default" && restaurantName != string.Empty && httpContext.Request.Method == "POST")
             {
                 httpContext.Response.ContentType = "application/json";
+                logger.LogInformation("Начинается добавление ресторана {name}", restaurantName);
+
                 if (restaurantService.AddRestaurant(new Restaurant { Name = restaurantName }))
                 {
+                    logger.LogInformation("Ресторан {name} добавлен", restaurantName);
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Ресторан добавлен успешно" });
                 }
                 else
                 {
                     httpContext.Response.StatusCode = 400;
+                    logger.LogInformation("Ресторан {name} уже существует", restaurantName);
                     await httpContext.Response.WriteAsJsonAsync(new { message = "Ресторан уже существует" });
                 }
             }

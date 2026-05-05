@@ -9,7 +9,7 @@ namespace RestaurantOrdersWebApp.Data
 
         public DbSet<Order> Orders { get; set; }
 
-        public DbSet<Dish> Dishes {  get; set; }
+        public DbSet<Dish> Dishes { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
 
@@ -29,6 +29,19 @@ namespace RestaurantOrdersWebApp.Data
             modelBuilder.Entity<Restaurant>(entity =>
             {
                 entity.HasKey(r => r.Name);
+                entity.ToTable("restaurants");
+            });
+            modelBuilder.Entity<Order>(e =>
+            {
+                e.ToTable("orders");
+            });
+            modelBuilder.Entity<Dish>(e =>
+            {
+                e.ToTable("dishes");
+            });
+            modelBuilder.Entity<Review>(e =>
+            {
+                e.ToTable("reviews");
             });
         }
     }
