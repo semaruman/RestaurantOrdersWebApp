@@ -57,11 +57,4 @@ https://github.com/user-attachments/assets/a9d28aef-cef7-4131-9741-f52d52728f72
 - [ ] Добавить категории блюд в меню каждого ресторана
 - [ ] Добавить загрузку изображений для блюда
 
-## Обо мне
-Автор: Семён Румянцев (semaruman)
 
-GitHub: github.com/semaruman
-
-Telegram: @RumDevCs
-
-Email: semaruman@yandex.ru
