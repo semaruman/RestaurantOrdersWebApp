@@ -231,6 +231,9 @@ _pkginfo.txt
 
 # Others
 ClientBin/
+*.db
+*.db-shm
+*.db-wal
 ~$*
 *~
 *.dbmdl
@@ -363,8 +366,12 @@ MigrationBackup/
 FodyWeavers.xsd
 
 
-# Configuration files
-appsettings.json
-appsettings.Development.json
-appsettings.Production.json
+# Configuration files with secrets (legacy root layout)
+/appsettings.json
+/appsettings.Development.json
+/appsettings.Production.json
 secrets.json
+
+# Local SQLite database
+restaurant.db
+restaurant.db-*

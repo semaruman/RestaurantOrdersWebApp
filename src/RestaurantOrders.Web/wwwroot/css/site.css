@@ -1,0 +1,10 @@
+:root { --ink:#241f1a; --clay:#9a4f2e; --cream:#f8f4ed; }
+* { box-sizing:border-box; }
+body { font-family:"DM Sans",sans-serif; color:var(--ink); }
+.font-serif { font-family:"Playfair Display",serif; }
+.hero { background:linear-gradient(90deg,rgba(25,18,12,.68),rgba(25,18,12,.28)),url("https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=2000&q=88") center/cover; }
+.glass { background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.35); box-shadow:0 18px 50px rgba(0,0,0,.2); backdrop-filter:blur(18px); }
+.eyebrow { margin-bottom:.6rem; color:var(--clay); font-size:.72rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; }
+.card-image { height:250px; width:100%; object-fit:cover; transition:transform .5s ease; }
+.restaurant-card:hover .card-image { transform:scale(1.035); }
+.panel { background:rgba(255,255,255,.82); border:1px solid rgba(120,90,65,.14); box-shadow:0 20px 55px rgba(70,45,25,.08); backdrop-filter:blur(12px); }
