@@ -89,7 +89,7 @@ public sealed class ApiRoutingMiddleware(RequestDelegate next)
         {
             if (!await Authorize(context, Permissions.RestaurantManage)) return;
             var body = await context.Request.ReadFromJsonAsync<RestaurantRequest>(context.RequestAborted);
-            if (body is null) { await BadRequest(context, "Request body is required."); return; }
+            if (body is null) { await BadRequest(context, "Тело запроса обязательно."); return; }
             var handler = context.RequestServices.GetRequiredService<CreateRestaurantHandler>();
             await WriteResult(context, await handler.Handle(body.ToCreate(), context.RequestAborted), StatusCodes.Status201Created);
             return;
@@ -101,7 +101,7 @@ public sealed class ApiRoutingMiddleware(RequestDelegate next)
             if (method == "PUT")
             {
                 var body = await context.Request.ReadFromJsonAsync<RestaurantRequest>(context.RequestAborted);
-                if (body is null) { await BadRequest(context, "Request body is required."); return; }
+                if (body is null) { await BadRequest(context, "Тело запроса обязательно."); return; }
                 var handler = context.RequestServices.GetRequiredService<UpdateRestaurantHandler>();
                 await WriteResult(context, await handler.Handle(body.ToUpdate(restaurantId), context.RequestAborted));
                 return;
@@ -128,7 +128,7 @@ public sealed class ApiRoutingMiddleware(RequestDelegate next)
             {
                 if (!await Authorize(context, Permissions.RestaurantManage)) return;
                 var body = await context.Request.ReadFromJsonAsync<MenuItemRequest>(context.RequestAborted);
-                if (body is null) { await BadRequest(context, "Request body is required."); return; }
+                if (body is null) { await BadRequest(context, "Тело запроса обязательно."); return; }
                 var handler = context.RequestServices.GetRequiredService<AddMenuItemHandler>();
                 await WriteResult(context, await handler.Handle(new AddMenuItemCommand(restaurantId, body.Name,
                     body.Description, body.Price, body.Category, body.PhotoUrl, body.Ingredients), context.RequestAborted),
@@ -155,7 +155,7 @@ public sealed class ApiRoutingMiddleware(RequestDelegate next)
             if (segments.Length == 1 && method == "POST")
             {
                 var body = await context.Request.ReadFromJsonAsync<ReservationRequest>(context.RequestAborted);
-                if (body is null) { await BadRequest(context, "Request body is required."); return; }
+                if (body is null) { await BadRequest(context, "Тело запроса обязательно."); return; }
                 var handler = context.RequestServices.GetRequiredService<CreateReservationHandler>();
                 await WriteResult(context, await handler.Handle(new CreateReservationCommand(body.RestaurantId,
                     userId, body.ReservationDateTimeUtc, body.GuestCount, body.Notes), context.RequestAborted),
@@ -187,7 +187,7 @@ public sealed class ApiRoutingMiddleware(RequestDelegate next)
             if (segments.Length == 1 && method == "POST")
             {
                 var body = await context.Request.ReadFromJsonAsync<OrderRequest>(context.RequestAborted);
-                if (body is null) { await BadRequest(context, "Request body is required."); return; }
+                if (body is null) { await BadRequest(context, "Тело запроса обязательно."); return; }
                 var handler = context.RequestServices.GetRequiredService<CreateOrderHandler>();
                 await WriteResult(context, await handler.Handle(new CreateOrderCommand(body.RestaurantId, userId,
                     body.Items.Select(x => new CreateOrderItemDto(x.MenuItemId, x.Quantity)).ToList(), body.Notes),
@@ -216,7 +216,7 @@ public sealed class ApiRoutingMiddleware(RequestDelegate next)
         {
             if (!await Authorize(context, Permissions.ReviewCreate)) return;
             var body = await context.Request.ReadFromJsonAsync<ReviewRequest>(context.RequestAborted);
-            if (body is null) { await BadRequest(context, "Request body is required."); return; }
+            if (body is null) { await BadRequest(context, "Тело запроса обязательно."); return; }
             var handler = context.RequestServices.GetRequiredService<SubmitReviewHandler>();
             await WriteResult(context, await handler.Handle(new SubmitReviewCommand(body.RestaurantId,
                 CurrentUserId(context), body.Rating, body.Comment), context.RequestAborted), StatusCodes.Status201Created);
@@ -277,7 +277,7 @@ public sealed class ApiRoutingMiddleware(RequestDelegate next)
         }
 
         context.Response.StatusCode = StatusCodes.Status404NotFound;
-        await context.Response.WriteAsJsonAsync(new { error = "API route not found." });
+        await context.Response.WriteAsJsonAsync(new { error = "Маршрут API не найден." });
     }
 
     private static async Task HandleAuth(HttpContext context, string[] segments, string method)
@@ -287,7 +287,7 @@ public sealed class ApiRoutingMiddleware(RequestDelegate next)
         if (segments is ["auth", "register"] && method == "POST")
         {
             var body = await context.Request.ReadFromJsonAsync<RegisterRequest>(context.RequestAborted);
-            if (body is null) { await BadRequest(context, "Request body is required."); return; }
+            if (body is null) { await BadRequest(context, "Тело запроса обязательно."); return; }
             var user = new ApplicationUser { Id = Guid.NewGuid(), UserName = body.Email, Email = body.Email,
                 DisplayName = body.DisplayName, EmailConfirmed = true };
             var created = await users.CreateAsync(user, body.Password);
@@ -313,7 +313,7 @@ public sealed class ApiRoutingMiddleware(RequestDelegate next)
             if (user is null || !(await signIn.CheckPasswordSignInAsync(user, body!.Password, true)).Succeeded)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                await context.Response.WriteAsJsonAsync(new { error = "Invalid email or password." });
+                await context.Response.WriteAsJsonAsync(new { error = "Неверный email или пароль." });
                 return;
             }
             await signIn.SignInAsync(user, body.RememberMe);
@@ -349,7 +349,7 @@ public sealed class ApiRoutingMiddleware(RequestDelegate next)
             return true;
         context.Response.StatusCode = context.User.Identity?.IsAuthenticated == true
             ? StatusCodes.Status403Forbidden : StatusCodes.Status401Unauthorized;
-        await context.Response.WriteAsJsonAsync(new { error = "Authorization required." });
+        await context.Response.WriteAsJsonAsync(new { error = "Требуется авторизация." });
         return false;
     }
 

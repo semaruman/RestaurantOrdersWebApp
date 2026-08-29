@@ -22,7 +22,7 @@ public sealed class GetRestaurantDetailsHandler(IRestaurantReadStore readStore)
             dto = await readStore.GetDetailsBySlugAsync(query.Slug, ct);
 
         return dto is null
-            ? Result.Failure<RestaurantDetailsDto>(new Error("RESTAURANT_NOT_FOUND", "Restaurant not found.", ErrorType.NotFound))
+            ? Result.Failure<RestaurantDetailsDto>(new Error("RESTAURANT_NOT_FOUND", "Ресторан не найден.", ErrorType.NotFound))
             : Result.Success(dto);
     }
 }

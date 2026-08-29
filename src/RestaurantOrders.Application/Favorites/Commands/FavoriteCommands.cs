@@ -16,13 +16,13 @@ public sealed class AddFavoriteHandler(
     {
         var restaurant = await restaurants.GetByIdAsync(RestaurantId.From(cmd.RestaurantId), ct);
         if (restaurant is null)
-            return Result.Failure<Guid>(new Error("RESTAURANT_NOT_FOUND", "Restaurant not found.", ErrorType.NotFound));
+            return Result.Failure<Guid>(new Error("RESTAURANT_NOT_FOUND", "Ресторан не найден.", ErrorType.NotFound));
 
         var userId = UserId.From(cmd.UserId);
         var restaurantId = restaurant.Id;
         var existing = await favorites.GetAsync(userId, restaurantId, ct);
         if (existing is not null)
-            return Result.Failure<Guid>(new Error("FAVORITE_EXISTS", "Restaurant is already in favorites.", ErrorType.Conflict));
+            return Result.Failure<Guid>(new Error("FAVORITE_EXISTS", "Ресторан уже в избранном.", ErrorType.Conflict));
 
         var favorite = Favorite.Create(userId, restaurantId);
         await favorites.AddAsync(favorite, ct);
@@ -38,7 +38,7 @@ public sealed class RemoveFavoriteHandler(IFavoriteRepository favorites, IUnitOf
     {
         var favorite = await favorites.GetAsync(UserId.From(cmd.UserId), RestaurantId.From(cmd.RestaurantId), ct);
         if (favorite is null)
-            return Result.Failure(new Error("FAVORITE_NOT_FOUND", "Favorite not found.", ErrorType.NotFound));
+            return Result.Failure(new Error("FAVORITE_NOT_FOUND", "Запись в избранном не найдена.", ErrorType.NotFound));
 
         await favorites.RemoveAsync(favorite, ct);
         await uow.SaveChangesAsync(ct);

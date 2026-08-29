@@ -19,10 +19,10 @@ public sealed class SubmitReviewHandler(
         {
             var restaurant = await restaurants.GetByIdAsync(RestaurantId.From(cmd.RestaurantId), ct);
             if (restaurant is null)
-                return Result.Failure<Guid>(new Error("RESTAURANT_NOT_FOUND", "Restaurant not found.", ErrorType.NotFound));
+                return Result.Failure<Guid>(new Error("RESTAURANT_NOT_FOUND", "Ресторан не найден.", ErrorType.NotFound));
 
             if (restaurant.Status == RestaurantStatus.PermanentlyClosed)
-                return Result.Failure<Guid>(new Error("RESTAURANT_CLOSED", "Cannot review a closed restaurant.", ErrorType.BusinessRule));
+                return Result.Failure<Guid>(new Error("RESTAURANT_CLOSED", "Нельзя оставить отзыв о закрытом ресторане.", ErrorType.BusinessRule));
 
             var review = Review.Submit(restaurant.Id, UserId.From(cmd.UserId), cmd.Rating, cmd.Comment);
             // Auto-publish for better UX in demo; moderation still available
@@ -57,7 +57,7 @@ public sealed class ModerateReviewHandler(
         {
             var review = await reviews.GetByIdAsync(ReviewId.From(cmd.ReviewId), ct);
             if (review is null)
-                return Result.Failure(new Error("REVIEW_NOT_FOUND", "Review not found.", ErrorType.NotFound));
+                return Result.Failure(new Error("REVIEW_NOT_FOUND", "Отзыв не найден.", ErrorType.NotFound));
 
             switch (cmd.Action.ToLowerInvariant())
             {
@@ -65,7 +65,7 @@ public sealed class ModerateReviewHandler(
                 case "reject": review.Reject(); break;
                 case "hide": review.Hide(); break;
                 default:
-                    return Result.Failure(new Error("INVALID_ACTION", "Unknown moderation action.", ErrorType.Validation));
+                    return Result.Failure(new Error("INVALID_ACTION", "Неизвестное действие.", ErrorType.Validation));
             }
 
             var restaurant = await restaurants.GetByIdAsync(review.RestaurantId, ct);

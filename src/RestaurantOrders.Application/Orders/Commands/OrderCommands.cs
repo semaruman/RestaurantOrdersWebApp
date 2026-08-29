@@ -23,10 +23,10 @@ public sealed class CreateOrderHandler(IRestaurantRepository restaurants, IOrder
         {
             var restaurant = await restaurants.GetByIdAsync(RestaurantId.From(cmd.RestaurantId), ct);
             if (restaurant is null)
-                return Result.Failure<Guid>(new Error("RESTAURANT_NOT_FOUND", "Restaurant not found.", ErrorType.NotFound));
+                return Result.Failure<Guid>(new Error("RESTAURANT_NOT_FOUND", "Ресторан не найден.", ErrorType.NotFound));
 
             if (restaurant.Status != RestaurantStatus.Published)
-                return Result.Failure<Guid>(new Error("RESTAURANT_NOT_PUBLISHED", "Restaurant is not accepting orders.", ErrorType.BusinessRule));
+                return Result.Failure<Guid>(new Error("RESTAURANT_NOT_PUBLISHED", "Ресторан не принимает заказы.", ErrorType.BusinessRule));
 
             var order = Order.CreateDraft(restaurant.Id, cmd.UserId is Guid uid ? UserId.From(uid) : null);
             foreach (var item in cmd.Items)
@@ -58,7 +58,7 @@ public sealed class CancelOrderHandler(IOrderRepository orders, IUnitOfWork uow)
         {
             var order = await orders.GetByIdAsync(OrderId.From(cmd.OrderId), ct);
             if (order is null)
-                return Result.Failure(new Error("ORDER_NOT_FOUND", "Order not found.", ErrorType.NotFound));
+                return Result.Failure(new Error("ORDER_NOT_FOUND", "Заказ не найден.", ErrorType.NotFound));
 
             order.Cancel();
             await uow.SaveChangesAsync(ct);
@@ -80,7 +80,7 @@ public sealed class UpdateOrderStatusHandler(IOrderRepository orders, IUnitOfWor
         {
             var order = await orders.GetByIdAsync(OrderId.From(cmd.OrderId), ct);
             if (order is null)
-                return Result.Failure(new Error("ORDER_NOT_FOUND", "Order not found.", ErrorType.NotFound));
+                return Result.Failure(new Error("ORDER_NOT_FOUND", "Заказ не найден.", ErrorType.NotFound));
 
             switch (cmd.Action.ToLowerInvariant())
             {
@@ -89,7 +89,7 @@ public sealed class UpdateOrderStatusHandler(IOrderRepository orders, IUnitOfWor
                 case "ready": order.MarkReady(); break;
                 case "complete": order.Complete(); break;
                 default:
-                    return Result.Failure(new Error("INVALID_ACTION", "Unknown order action.", ErrorType.Validation));
+                    return Result.Failure(new Error("INVALID_ACTION", "Неизвестное действие с заказом.", ErrorType.Validation));
             }
 
             await uow.SaveChangesAsync(ct);

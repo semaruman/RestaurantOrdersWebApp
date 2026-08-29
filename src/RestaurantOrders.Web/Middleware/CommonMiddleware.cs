@@ -50,7 +50,7 @@ public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Ex
             var problem = new ProblemDetails
             {
                 Status = status,
-                Title = exception is DomainException ? "Business rule violation" : "Unexpected server error",
+                Title = exception is DomainException ? "Нарушение бизнес-правила" : "Непредвиденная ошибка сервера",
                 Detail = exception.Message,
                 Instance = context.Request.Path
             };

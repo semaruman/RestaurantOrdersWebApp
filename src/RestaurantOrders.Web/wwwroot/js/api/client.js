@@ -6,7 +6,7 @@ export async function api(path, options = {}) {
   });
   if (response.status === 204) return null;
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.title || data.error || "Request failed");
+  if (!response.ok) throw new Error(data.title || data.error || "Не удалось выполнить запрос");
   return data;
 }
 

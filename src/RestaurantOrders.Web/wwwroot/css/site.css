@@ -2,9 +2,56 @@
 * { box-sizing:border-box; }
 body { font-family:"DM Sans",sans-serif; color:var(--ink); }
 .font-serif { font-family:"Playfair Display",serif; }
-.hero { background:linear-gradient(90deg,rgba(25,18,12,.68),rgba(25,18,12,.28)),url("https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=2000&q=88") center/cover; }
-.glass { background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.35); box-shadow:0 18px 50px rgba(0,0,0,.2); backdrop-filter:blur(18px); }
+
+.hero {
+  background:
+    linear-gradient(180deg, rgba(12,8,6,.78) 0%, rgba(12,8,6,.52) 42%, rgba(12,8,6,.78) 100%),
+    url("https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=2000&q=88") center/cover;
+}
+
+.hero-nav {
+  background: linear-gradient(180deg, rgba(12,8,6,.82), rgba(12,8,6,.18));
+}
+
+.text-on-photo {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.55), 0 6px 24px rgba(0,0,0,.35);
+}
+
+.hero-eyebrow {
+  color: #fde68a;
+  text-shadow: 0 1px 3px rgba(0,0,0,.6);
+}
+
+.hero-subtitle {
+  color: rgba(255,255,255,.94);
+  text-shadow: 0 1px 3px rgba(0,0,0,.55);
+}
+
+.hero-banner {
+  background:
+    linear-gradient(0deg, rgba(12,8,6,.88) 0%, rgba(12,8,6,.45) 55%, rgba(12,8,6,.25) 100%);
+}
+
+.glass {
+  background: rgba(255,255,255,.94);
+  border: 1px solid rgba(255,255,255,.98);
+  box-shadow: 0 18px 50px rgba(0,0,0,.28);
+  backdrop-filter: blur(18px);
+}
+
 .eyebrow { margin-bottom:.6rem; color:var(--clay); font-size:.72rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; }
 .card-image { height:250px; width:100%; object-fit:cover; transition:transform .5s ease; }
 .restaurant-card:hover .card-image { transform:scale(1.035); }
-.panel { background:rgba(255,255,255,.82); border:1px solid rgba(120,90,65,.14); box-shadow:0 20px 55px rgba(70,45,25,.08); backdrop-filter:blur(12px); }
+.panel {
+  background: rgba(255,255,255,.97);
+  border: 1px solid rgba(120,90,65,.18);
+  box-shadow: 0 20px 55px rgba(70,45,25,.12);
+  backdrop-filter: blur(12px);
+}
+
+.login-backdrop {
+  background:
+    linear-gradient(rgba(12,8,6,.62), rgba(12,8,6,.62)),
+    url("https://images.unsplash.com/photo-1516211697506-8360dbcfe9a4?auto=format&fit=crop&w=1800&q=85") center/cover;
+}

@@ -1,38 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Table & Hearth — remarkable restaurants</title>
+  <title>Table & Hearth — рестораны с характером</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/site.css">
 </head>
 <body class="bg-stone-50 text-stone-900">
-  <header class="absolute inset-x-0 top-0 z-20">
-    <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 text-white">
+  <header class="hero-nav absolute inset-x-0 top-0 z-20">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 text-on-photo">
       <a class="font-serif text-2xl" href="/">Table & Hearth</a>
-      <div class="flex items-center gap-6 text-sm"><a href="#discover">Discover</a><a href="/login.html">Sign in</a><a href="/admin.html" class="rounded-full border border-white/50 px-4 py-2">For restaurants</a></div>
+      <div class="flex items-center gap-6 text-sm font-medium"><a href="#discover">Обзор</a><a href="/login.html">Войти</a><a href="/admin.html" class="rounded-full border border-white/70 bg-black/20 px-4 py-2">Для ресторанов</a></div>
     </nav>
   </header>
   <main>
-    <section class="hero relative flex min-h-[680px] items-center justify-center px-6 text-center text-white">
+    <section class="hero relative flex min-h-[680px] items-center justify-center px-6 text-center text-on-photo">
       <div class="relative z-10 max-w-4xl">
-        <p class="mb-5 text-xs font-semibold uppercase tracking-[.35em] text-amber-200">Curated dining across Russia</p>
-        <h1 class="font-serif text-5xl leading-tight md:text-7xl">Find a table worth remembering</h1>
-        <p class="mx-auto mt-6 max-w-2xl text-lg text-stone-200">Independent kitchens, celebrated chefs, and neighborhood gems—chosen with care.</p>
+        <p class="hero-eyebrow mb-5 text-xs font-semibold uppercase tracking-[.35em]">Отборные рестораны по всей России</p>
+        <h1 class="font-serif text-5xl leading-tight md:text-7xl">Найдите столик, который запомнится</h1>
+        <p class="hero-subtitle mx-auto mt-6 max-w-2xl text-lg">Независимые кухни, известные шеф-повара и любимые места района — отобраны с заботой.</p>
         <form id="search-form" class="glass mx-auto mt-10 flex max-w-2xl gap-3 rounded-2xl p-3">
-          <input id="search" class="min-w-0 flex-1 rounded-xl bg-white/95 px-5 py-4 text-stone-900 outline-none" placeholder="Cuisine, restaurant, or mood">
-          <button class="rounded-xl bg-amber-700 px-7 py-4 font-semibold hover:bg-amber-800">Explore</button>
+          <input id="search" class="min-w-0 flex-1 rounded-xl bg-white px-5 py-4 text-stone-900 outline-none ring-1 ring-stone-200" placeholder="Кухня, ресторан или настроение">
+          <button class="rounded-xl bg-amber-700 px-7 py-4 font-semibold text-white hover:bg-amber-800">Найти</button>
         </form>
       </div>
     </section>
     <section id="discover" class="mx-auto max-w-7xl px-6 py-24">
-      <div class="mb-10 flex items-end justify-between"><div><p class="eyebrow">Our selection</p><h2 class="font-serif text-4xl">Places with a point of view</h2></div><span id="result-count" class="text-sm text-stone-500"></span></div>
+      <div class="mb-10 flex items-end justify-between"><div><p class="eyebrow">Наша подборка</p><h2 class="font-serif text-4xl text-stone-900">Места с характером</h2></div><span id="result-count" class="text-sm text-stone-600"></span></div>
       <div id="restaurant-grid" class="grid gap-7 md:grid-cols-2 lg:grid-cols-3"></div>
     </section>
   </main>
-  <footer class="border-t border-stone-200 px-6 py-10 text-center text-sm text-stone-500">© 2026 Table & Hearth</footer>
+  <footer class="border-t border-stone-200 px-6 py-10 text-center text-sm text-stone-600">© 2026 Table & Hearth</footer>
   <script type="module" src="/js/pages/home.js"></script>
 </body>
 </html>

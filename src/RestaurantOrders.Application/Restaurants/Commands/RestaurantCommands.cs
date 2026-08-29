@@ -34,7 +34,7 @@ public sealed class CreateRestaurantHandler(IRestaurantRepository restaurants, I
                 : RestaurantSlug.Create(cmd.Slug).Value;
 
             if (await restaurants.SlugExistsAsync(slug, ct))
-                return Result.Failure<Guid>(new Error("SLUG_EXISTS", "Restaurant slug already exists.", ErrorType.Conflict));
+                return Result.Failure<Guid>(new Error("SLUG_EXISTS", "Такой адрес ресторана уже занят.", ErrorType.Conflict));
 
             var restaurant = Restaurant.Create(cmd.Name, slug);
             restaurant.UpdateDescription(cmd.Description);
@@ -85,7 +85,7 @@ public sealed class UpdateRestaurantHandler(IRestaurantRepository restaurants, I
         {
             var restaurant = await restaurants.GetByIdAsync(RestaurantId.From(cmd.RestaurantId), ct);
             if (restaurant is null)
-                return Result.Failure(new Error("RESTAURANT_NOT_FOUND", "Restaurant not found.", ErrorType.NotFound));
+                return Result.Failure(new Error("RESTAURANT_NOT_FOUND", "Ресторан не найден.", ErrorType.NotFound));
 
             restaurant.ChangeName(cmd.Name);
             restaurant.UpdateDescription(cmd.Description);
@@ -117,7 +117,7 @@ public sealed class PublishRestaurantHandler(IRestaurantRepository restaurants, 
         {
             var restaurant = await restaurants.GetByIdAsync(RestaurantId.From(cmd.RestaurantId), ct);
             if (restaurant is null)
-                return Result.Failure(new Error("RESTAURANT_NOT_FOUND", "Restaurant not found.", ErrorType.NotFound));
+                return Result.Failure(new Error("RESTAURANT_NOT_FOUND", "Ресторан не найден.", ErrorType.NotFound));
 
             restaurant.Publish();
             await uow.SaveChangesAsync(ct);
@@ -139,7 +139,7 @@ public sealed class UnpublishRestaurantHandler(IRestaurantRepository restaurants
         {
             var restaurant = await restaurants.GetByIdAsync(RestaurantId.From(cmd.RestaurantId), ct);
             if (restaurant is null)
-                return Result.Failure(new Error("RESTAURANT_NOT_FOUND", "Restaurant not found.", ErrorType.NotFound));
+                return Result.Failure(new Error("RESTAURANT_NOT_FOUND", "Ресторан не найден.", ErrorType.NotFound));
 
             restaurant.Unpublish();
             await uow.SaveChangesAsync(ct);
@@ -161,7 +161,7 @@ public sealed class CloseRestaurantHandler(IRestaurantRepository restaurants, IU
         {
             var restaurant = await restaurants.GetByIdAsync(RestaurantId.From(cmd.RestaurantId), ct);
             if (restaurant is null)
-                return Result.Failure(new Error("RESTAURANT_NOT_FOUND", "Restaurant not found.", ErrorType.NotFound));
+                return Result.Failure(new Error("RESTAURANT_NOT_FOUND", "Ресторан не найден.", ErrorType.NotFound));
 
             if (cmd.Permanently) restaurant.ClosePermanently();
             else restaurant.CloseTemporarily();
@@ -193,7 +193,7 @@ public sealed class AddMenuItemHandler(IRestaurantRepository restaurants, IUnitO
         {
             var restaurant = await restaurants.GetByIdAsync(RestaurantId.From(cmd.RestaurantId), ct);
             if (restaurant is null)
-                return Result.Failure<Guid>(new Error("RESTAURANT_NOT_FOUND", "Restaurant not found.", ErrorType.NotFound));
+                return Result.Failure<Guid>(new Error("RESTAURANT_NOT_FOUND", "Ресторан не найден.", ErrorType.NotFound));
 
             var item = restaurant.AddMenuItem(cmd.Name, cmd.Description, cmd.Price, cmd.Category, cmd.PhotoUrl, cmd.Ingredients);
             await uow.SaveChangesAsync(ct);

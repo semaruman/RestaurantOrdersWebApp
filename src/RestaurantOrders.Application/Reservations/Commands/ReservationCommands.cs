@@ -25,7 +25,7 @@ public sealed class CreateReservationHandler(
         {
             var restaurant = await restaurants.GetByIdAsync(RestaurantId.From(cmd.RestaurantId), ct);
             if (restaurant is null)
-                return Result.Failure<Guid>(new Error("RESTAURANT_NOT_FOUND", "Restaurant not found.", ErrorType.NotFound));
+                return Result.Failure<Guid>(new Error("RESTAURANT_NOT_FOUND", "Ресторан не найден.", ErrorType.NotFound));
 
             // Concurrency: check overlapping capacity for the day
             if (restaurant.Capacity is int capacity)
@@ -38,7 +38,7 @@ public sealed class CreateReservationHandler(
                     .Sum(r => r.GuestCount);
 
                 if (activeGuests + cmd.GuestCount > capacity)
-                    return Result.Failure<Guid>(new Error("CAPACITY_EXCEEDED", "Restaurant capacity exceeded for this time slot.", ErrorType.Conflict));
+                    return Result.Failure<Guid>(new Error("CAPACITY_EXCEEDED", "Превышена вместимость ресторана на это время.", ErrorType.Conflict));
             }
 
             var reservation = Reservation.Create(
@@ -68,7 +68,7 @@ public sealed class ConfirmReservationHandler(IReservationRepository reservation
         {
             var reservation = await reservations.GetByIdAsync(ReservationId.From(cmd.ReservationId), ct);
             if (reservation is null)
-                return Result.Failure(new Error("RESERVATION_NOT_FOUND", "Reservation not found.", ErrorType.NotFound));
+                return Result.Failure(new Error("RESERVATION_NOT_FOUND", "Бронирование не найдено.", ErrorType.NotFound));
 
             reservation.Confirm();
             await uow.SaveChangesAsync(ct);
@@ -90,7 +90,7 @@ public sealed class CancelReservationHandler(IReservationRepository reservations
         {
             var reservation = await reservations.GetByIdAsync(ReservationId.From(cmd.ReservationId), ct);
             if (reservation is null)
-                return Result.Failure(new Error("RESERVATION_NOT_FOUND", "Reservation not found.", ErrorType.NotFound));
+                return Result.Failure(new Error("RESERVATION_NOT_FOUND", "Бронирование не найдено.", ErrorType.NotFound));
 
             reservation.Cancel();
             await uow.SaveChangesAsync(ct);
