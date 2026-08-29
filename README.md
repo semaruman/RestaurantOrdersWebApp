@@ -6,7 +6,12 @@
 
 Решение: `RestaurantOrdersPlatform.sln`
 
-Веб-интерфейс на **русском языке**, бренд — **Table & Hearth**.
+Веб-интерфейс на **русском языке**.
+
+<div>
+        <img width="1871" height="986" alt="image" src="https://github.com/user-attachments/assets/2c4cddc6-db99-4404-9d34-246312fcf2a9" />
+
+</div>
 
 ---
 
