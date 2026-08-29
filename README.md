@@ -1,54 +1,56 @@
 # Restaurant Orders Platform
 
-Production-oriented **modular monolith** for restaurant discovery, reservations, ordering, reviews, and favorites.
+Платформа для поиска ресторанов, бронирования столиков, заказов, отзывов и избранного — **модульный монолит**, ориентированный на production.
 
-Built on **.NET 8** with **Domain-Driven Design**, **Clean Architecture**, and **middleware-based HTTP routing** — without MVC Controllers.
+Стек: **.NET 8**, **Domain-Driven Design**, **Clean Architecture**, **маршрутизация через middleware** — без MVC Controllers.
 
-Solution: `RestaurantOrdersPlatform.sln`
+Решение: `RestaurantOrdersPlatform.sln`
 
----
-
-## What you can do
-
-### Guest / registered user
-
-| Capability | Description |
-|------------|-------------|
-| **Browse restaurants** | Search and filter by text, cuisine, city, price category, rating, features, open-now, reservation availability |
-| **Featured listings** | Curated top restaurants on the home page |
-| **Restaurant details** | Full profile: address, contacts, opening hours, menu, photos, rating, features |
-| **Reservations** | Book a table (date/time, guest count, notes); view and cancel own reservations |
-| **Orders** | Place an order from menu items; view order history; cancel pending orders |
-| **Reviews** | Submit a rating and comment for a restaurant |
-| **Favorites** | Save and remove favorite restaurants |
-| **Authentication** | Register, login, logout, view current profile (cookie-based session) |
-
-### Administrator
-
-| Capability | Description |
-|------------|-------------|
-| **Restaurant management** | Create, update, permanently close restaurants |
-| **Lifecycle** | Publish / unpublish restaurants (domain-enforced readiness rules) |
-| **Menu management** | Add menu items to a restaurant |
-| **Order workflow** | Advance order status: confirm → prepare → ready → complete |
-| **Reservation workflow** | Confirm or cancel reservations |
-| **Review moderation** | Publish, reject, or hide reviews |
-| **Dashboard stats** | Overview counts: restaurants, users, orders, reservations, reviews |
-
-### Web UI (Tailwind + Vanilla JS)
-
-| Page | Purpose |
-|------|---------|
-| `/` | Home — hero search, restaurant grid |
-| `/restaurant.html?slug=...` | Restaurant details, menu, favorites |
-| `/login.html` | Sign in |
-| `/admin.html` | Admin dashboard stats |
-
-API documentation: `/swagger` · Health check: `/health`
+Веб-интерфейс на **русском языке**, бренд — **Table & Hearth**.
 
 ---
 
-## Quick start
+## Возможности
+
+### Гость / зарегистрированный пользователь
+
+| Возможность | Описание |
+|-------------|----------|
+| **Каталог ресторанов** | Поиск и фильтрация по тексту, кухне, городу, ценовой категории, рейтингу, особенностям, «открыто сейчас», доступности бронирования |
+| **Избранные места** | Подборка лучших ресторанов на главной странице |
+| **Страница ресторана** | Полный профиль: адрес, контакты, часы работы, меню, фото, рейтинг, особенности |
+| **Бронирования** | Забронировать стол (дата/время, число гостей, комментарий); просмотр и отмена своих броней |
+| **Заказы** | Оформить заказ из меню; история заказов; отмена ожидающих заказов |
+| **Отзывы** | Оставить оценку и комментарий к ресторану |
+| **Избранное** | Добавлять и удалять любимые рестораны |
+| **Аутентификация** | Регистрация, вход, выход, просмотр профиля (cookie-сессия) |
+
+### Администратор
+
+| Возможность | Описание |
+|-------------|----------|
+| **Управление ресторанами** | Создание, обновление, окончательное закрытие |
+| **Жизненный цикл** | Публикация / снятие с публикации (правила готовности enforced в домене) |
+| **Меню** | Добавление позиций в меню ресторана |
+| **Заказы** | Смена статуса: подтвердить → готовится → готов → завершён |
+| **Бронирования** | Подтверждение или отмена |
+| **Модерация отзывов** | Публикация, отклонение, скрытие |
+| **Статистика** | Сводка: рестораны, пользователи, заказы, бронирования, отзывы |
+
+### Веб-интерфейс (Tailwind + Vanilla JS)
+
+| Страница | Назначение |
+|----------|------------|
+| `/` | Главная — поиск и сетка ресторанов |
+| `/restaurant.html?slug=...` | Детали ресторана, меню, избранное |
+| `/login.html` | Вход |
+| `/admin.html` | Панель администратора |
+
+Документация API: `/swagger` · Проверка здоровья: `/health`
+
+---
+
+## Быстрый старт
 
 ```powershell
 dotnet build RestaurantOrdersPlatform.sln
@@ -56,61 +58,65 @@ dotnet test RestaurantOrdersPlatform.sln
 dotnet run --project src/RestaurantOrders.Web
 ```
 
-**Database:** SQLite by default (`restaurant.db` created on first run).  
-For MySQL, set `ConnectionStrings__DefaultConnection` with `Server=` or `Host=`.
+Приложение откроется на `http://localhost:5000` (или порту из `launchSettings.json`).
 
-**Seeded accounts:**
+**База данных:** по умолчанию SQLite (`restaurant.db` создаётся при первом запуске).  
+Для MySQL задайте `ConnectionStrings__DefaultConnection` со строкой, содержащей `Server=` или `Host=`.
 
-| Email | Password | Role |
-|-------|----------|------|
+**Тестовые аккаунты:**
+
+| Email | Пароль | Роль |
+|-------|--------|------|
 | `admin@restaurant.local` | `Admin123!` | Admin |
 | `user@restaurant.local` | `User123!` | User |
 
-**Seeded restaurants:** Juniper & Rye, Saffron Courtyard, Casa Limone, Ember Table, Dacha Brunch, Blue Current — each with menu, opening hours, and published status.
+**Демо-рестораны:** Кедр и Ржаной, Шафрановый дворик, Дом Лимона, Стол у огня, Дача-бранч, Синее течение — у каждого есть меню, часы работы и статус «опубликован».
+
+> Чтобы пересоздать демо-данные после изменения сида, удалите `restaurant.db` в каталоге Web-проекта и перезапустите приложение.
 
 ---
 
-## Architecture overview
+## Обзор архитектуры
 
-### High-level request flow
+### Поток HTTP-запроса
 
 ```
-HTTP Client (browser / Postman)
+HTTP-клиент (браузер / Postman)
         │
         ▼
 ┌───────────────────────────────────────┐
-│  Web Layer (RestaurantOrders.Web)     │
+│  Web-слой (RestaurantOrders.Web)      │
 │                                       │
 │  ExceptionHandlingMiddleware          │
 │  CorrelationIdMiddleware              │
 │  RequestLoggingMiddleware             │
 │  Authentication / Authorization       │
-│  ApiRoutingMiddleware  ← no Controllers│
-│  Static files (Tailwind frontend)     │
+│  ApiRoutingMiddleware  ← без Controllers│
+│  Статика (Tailwind frontend)          │
 └───────────────┬───────────────────────┘
-                │  bind request → dispatch handler
+                │  bind request → handler
                 ▼
 ┌───────────────────────────────────────┐
-│  Application Layer                    │
+│  Application-слой                     │
 │                                       │
 │  Commands / Queries (CQRS)            │
 │  Use-case handlers                    │
-│  Repository ports (interfaces)        │
-│  Result<T> / Error taxonomy           │
+│  Порты репозиториев (интерфейсы)      │
+│  Result<T> / таксономия Error         │
 └───────────────┬───────────────────────┘
-                │  orchestrate domain + ports
+                │  оркестрация домена + портов
                 ▼
 ┌───────────────────────────────────────┐
-│  Domain Layer                         │
+│  Domain-слой                          │
 │                                       │
 │  Aggregates, Entities, Value Objects  │
-│  Domain Events, Invariants            │
+│  Domain Events, инварианты            │
 │  DomainException                      │
 └───────────────┬───────────────────────┘
-                │  implemented by
+                │  реализуется в
                 ▼
 ┌───────────────────────────────────────┐
-│  Infrastructure Layer                 │
+│  Infrastructure-слой                  │
 │                                       │
 │  EF Core + SQLite/MySQL               │
 │  Repositories, Read Store             │
@@ -119,24 +125,24 @@ HTTP Client (browser / Postman)
 └───────────────────────────────────────┘
 ```
 
-**Key principle:** middleware is the HTTP adapter. It parses routes, binds DTOs, calls Application handlers, and maps `Result<T>` to HTTP — it does **not** contain business rules.
+**Ключевой принцип:** middleware — это HTTP-адаптер. Он разбирает маршруты, привязывает DTO, вызывает handlers из Application и мапит `Result<T>` в HTTP. Бизнес-правил в middleware **нет**.
 
 ---
 
-## Solution structure
+## Структура решения
 
 ```
 src/
-├── RestaurantOrders.Domain/          # Pure domain — zero infrastructure deps
+├── RestaurantOrders.Domain/          # Чистый домен — без зависимостей от инфраструктуры
 │   ├── Common/                       # Entity, AggregateRoot, ValueObject, Money, Rating…
-│   ├── Restaurants/                  # Restaurant aggregate, MenuItem, OpeningHours…
-│   ├── Orders/                       # Order aggregate, OrderLine, lifecycle
-│   ├── Reservations/                 # Reservation aggregate, status transitions
-│   ├── Reviews/                      # Review aggregate, moderation lifecycle
-│   ├── Favorites/                    # Favorite aggregate (User + Restaurant uniqueness)
-│   └── Users/                        # UserProfile, Roles, Permissions constants
+│   ├── Restaurants/                  # Агрегат Restaurant, MenuItem, OpeningHours…
+│   ├── Orders/                       # Агрегат Order, OrderLine, жизненный цикл
+│   ├── Reservations/                 # Агрегат Reservation, переходы статусов
+│   ├── Reviews/                      # Агрегат Review, модерация
+│   ├── Favorites/                    # Агрегат Favorite (уникальность User + Restaurant)
+│   └── Users/                        # UserProfile, константы Roles, Permissions
 │
-├── RestaurantOrders.Application/     # Use cases — depends on Domain only
+├── RestaurantOrders.Application/     # Use cases — зависит только от Domain
 │   ├── Abstractions/                 # IRestaurantRepository, IUnitOfWork, IRestaurantReadStore…
 │   ├── Restaurants/                  # Commands + Queries + Handlers
 │   ├── Orders/
@@ -145,60 +151,60 @@ src/
 │   ├── Favorites/
 │   └── Users/
 │
-├── RestaurantOrders.Infrastructure/  # Technical details
+├── RestaurantOrders.Infrastructure/  # Технические детали
 │   ├── Persistence/                  # AppDbContext, EF configurations, repositories
 │   ├── Authentication/               # ApplicationUser (Identity)
 │   └── DatabaseSeeder.cs
 │
 └── RestaurantOrders.Web/             # HTTP + frontend
     ├── Middleware/                   # ApiRoutingMiddleware, logging, errors
-    └── wwwroot/                      # Tailwind UI, modular JS (api/, pages/, components/)
+    └── wwwroot/                      # Tailwind UI, модульный JS (api/, pages/, components/)
 
 tests/
-├── RestaurantOrders.Domain.UnitTests/       # Aggregate invariants, lifecycle rules
-├── RestaurantOrders.Architecture.Tests/     # NetArchTest dependency rules
-└── RestaurantOrders.Integration.Tests/      # HTTP → middleware → DB smoke test
+├── RestaurantOrders.Domain.UnitTests/       # Инварианты агрегатов, правила жизненного цикла
+├── RestaurantOrders.Architecture.Tests/     # Правила зависимостей (NetArchTest)
+└── RestaurantOrders.Integration.Tests/      # Smoke-тест HTTP → middleware → БД
 ```
 
 ---
 
-## Domain model
+## Доменная модель
 
 ### Bounded contexts
 
-| Context | Aggregate Root | Notes |
-|---------|---------------|-------|
-| **Catalog** | `Restaurant` | Profile, menu items, opening hours, lifecycle (Draft → Published → Closed) |
-| **Ordering** | `Order` | Lines with price snapshots, status workflow |
-| **Reservations** | `Reservation` | Capacity-aware booking rules |
-| **Reviews** | `Review` | Moderation: Pending → Published / Rejected / Hidden |
-| **Favorites** | `Favorite` | Unique (UserId, RestaurantId) pair |
-| **Identity** | `UserProfile` | Domain profile linked to ASP.NET Identity user |
+| Контекст | Aggregate Root | Примечания |
+|----------|----------------|------------|
+| **Каталог** | `Restaurant` | Профиль, меню, часы работы, жизненный цикл (Draft → Published → Closed) |
+| **Заказы** | `Order` | Позиции со снимком цены, workflow статусов |
+| **Бронирования** | `Reservation` | Правила с учётом вместимости |
+| **Отзывы** | `Review` | Модерация: Pending → Published / Rejected / Hidden |
+| **Избранное** | `Favorite` | Уникальная пара (UserId, RestaurantId) |
+| **Identity** | `UserProfile` | Доменный профиль, связанный с пользователем ASP.NET Identity |
 
-### Value Objects (examples)
+### Value Objects (примеры)
 
 `RestaurantId`, `UserId`, `OrderId`, `Money`, `EmailAddress`, `PhoneNumber`, `Rating`, `Address`, `RestaurantName`, `RestaurantSlug`, `OpeningHours`
 
-### Domain events (examples)
+### Domain events (примеры)
 
 `RestaurantPublished`, `RestaurantClosed`, `OrderPlaced`, `OrderCancelled`, `ReservationCreated`, `ReviewPublished`
 
-Events live in Domain. No coupling to MediatR, EF Core, or ASP.NET.
+События живут в Domain. Нет связи с MediatR, EF Core или ASP.NET.
 
-### Business rules enforced in Domain
+### Бизнес-правила в Domain
 
-- Restaurant cannot be **published** without address, contacts, description, cuisine, and at least one menu item
-- **Closed** restaurant cannot accept reservations
-- **Cancelled** reservation cannot be confirmed
-- **Completed** order cannot be modified
-- Order line prices are **snapshotted** at order time
-- Duplicate favorites are rejected at Application layer; Domain protects aggregate invariants
+- Ресторан **нельзя опубликовать** без адреса, контактов, описания, кухни и хотя бы одной позиции меню
+- **Закрытый** ресторан не принимает бронирования
+- **Отменённое** бронирование нельзя подтвердить
+- **Завершённый** заказ нельзя изменить
+- Цены в строках заказа **фиксируются** на момент оформления
+- Дубликаты в избранном отклоняются на уровне Application; Domain защищает инварианты агрегата
 
 ---
 
-## Application layer (CQRS)
+## Application-слой (CQRS)
 
-Logical **Command / Query** separation without MediatR or a generic repository:
+Логическое разделение **Command / Query** без MediatR и generic repository:
 
 ```
 CreateRestaurantCommand  → CreateRestaurantHandler  → IRestaurantRepository
@@ -206,27 +212,27 @@ SearchRestaurantsQuery   → SearchRestaurantsHandler → IRestaurantReadStore
 ```
 
 Handlers:
-- Coordinate domain behavior
-- Use repository **ports** (interfaces in `Application.Abstractions`)
-- Manage transaction boundary via `IUnitOfWork` (backed by `AppDbContext.SaveChangesAsync`)
-- Return `Result` / `Result<T>` with typed `Error` (Validation, NotFound, Conflict, BusinessRule…)
+- Координируют поведение домена
+- Используют **порты** репозиториев (интерфейсы в `Application.Abstractions`)
+- Управляют транзакцией через `IUnitOfWork` (`AppDbContext.SaveChangesAsync`)
+- Возвращают `Result` / `Result<T>` с типизированным `Error` (Validation, NotFound, Conflict, BusinessRule…)
 
-**Read vs write:** `IRestaurantReadStore` serves search/listing/details projections; write path goes through aggregate repositories.
+**Чтение vs запись:** `IRestaurantReadStore` обслуживает поиск, списки и проекции деталей; запись идёт через репозитории агрегатов.
 
 ---
 
-## HTTP layer — middleware, not Controllers
+## HTTP-слой — middleware, не Controllers
 
-`ApiRoutingMiddleware` matches `/api/v1/*` paths and dispatches to Application handlers:
+`ApiRoutingMiddleware` сопоставляет пути `/api/v1/*` и вызывает handlers из Application:
 
 ```
-GET  /api/v1/restaurants                    → search (filters, pagination)
-GET  /api/v1/restaurants/featured           → featured list
-GET  /api/v1/restaurants/{id|slug}          → details
-POST /api/v1/restaurants                    → create (Admin)
-PUT  /api/v1/restaurants/{id}               → update (Admin)
-POST /api/v1/restaurants/{id}/publish       → publish (Admin)
-POST /api/v1/restaurants/{id}/menu          → add menu item (Admin)
+GET  /api/v1/restaurants                    → поиск (фильтры, пагинация)
+GET  /api/v1/restaurants/featured           → избранная подборка
+GET  /api/v1/restaurants/{id|slug}          → детали
+POST /api/v1/restaurants                    → создать (Admin)
+PUT  /api/v1/restaurants/{id}               → обновить (Admin)
+POST /api/v1/restaurants/{id}/publish       → опубликовать (Admin)
+POST /api/v1/restaurants/{id}/menu          → добавить позицию меню (Admin)
 
 POST /api/v1/auth/login | register | logout
 GET  /api/v1/auth/me
@@ -246,83 +252,83 @@ GET  /api/v1/favorites
 POST /api/v1/favorites/{restaurantId}
 DELETE /api/v1/favorites/{restaurantId}
 
-GET  /api/v1/admin/stats                    → Admin dashboard
+GET  /api/v1/admin/stats                    → панель администратора
 ```
 
-Errors follow **RFC 7807 Problem Details** with `code`, `traceId`, and HTTP status mapped from `ErrorType`.
+Ошибки оформляются по **RFC 7807 Problem Details** с полями `code`, `traceId` и HTTP-статусом из `ErrorType`. Сообщения для пользователя — на русском.
 
 Cross-cutting middleware:
 
-| Middleware | Responsibility |
-|------------|----------------|
-| `ExceptionHandlingMiddleware` | Unhandled exceptions → Problem Details |
-| `CorrelationIdMiddleware` | `X-Correlation-ID` header, trace propagation |
-| `RequestLoggingMiddleware` | Structured request/response logging |
+| Middleware | Ответственность |
+|------------|-----------------|
+| `ExceptionHandlingMiddleware` | Необработанные исключения → Problem Details |
+| `CorrelationIdMiddleware` | Заголовок `X-Correlation-ID`, трассировка |
+| `RequestLoggingMiddleware` | Структурированное логирование запросов |
 
 ---
 
-## Security
+## Безопасность
 
-- **Authentication:** ASP.NET Identity with **cookie sessions** (same-origin friendly for SPA-like frontend)
-- **Authorization:** Policy-based — `Permissions.RestaurantManage`, `Permissions.ReviewModerate`, role `Admin`, etc.
-- **Password policy:** min 8 chars, upper/lower/digit required
-- API returns `401` / `403` (not redirects) for unauthenticated API calls
+- **Аутентификация:** ASP.NET Identity с **cookie-сессиями** (удобно для same-origin frontend)
+- **Авторизация:** Policy-based — `Permissions.RestaurantManage`, `Permissions.ReviewModerate`, роль `Admin` и др.
+- **Пароль:** минимум 8 символов, обязательны верхний/нижний регистр и цифра
+- API возвращает `401` / `403` (без редиректов) для неавторизованных запросов
 
-Extensible roles defined in Domain: `Admin`, `User`, `RestaurantOwner`, `Moderator`, `Manager`.
-
----
-
-## Persistence
-
-- **EF Core 8** with Fluent API configurations in Infrastructure (Domain has no EF attributes)
-- **SQLite** default; **MySQL** (Pomelo) when connection string indicates it
-- Indexes on slug (unique), favorites (UserId + RestaurantId), reservations by restaurant/date
-- JSON columns for cuisine types, features, photo URLs
-- Owned entities for Address, Contacts, MenuItem, OrderLine, OpeningHours
-- Optimistic concurrency via `UpdatedAtUtc` on key aggregates
+Роли в Domain: `Admin`, `User`, `RestaurantOwner`, `Moderator`, `Manager`.
 
 ---
 
-## Testing strategy
+## Персистентность
 
-| Layer | What is tested |
-|-------|----------------|
-| **Domain unit tests** | Publish rules, order totals, reservation transitions, rating bounds, favorite uniqueness |
+- **EF Core 8** с Fluent API в Infrastructure (в Domain нет EF-атрибутов)
+- **SQLite** по умолчанию; **MySQL** (Pomelo), если строка подключения указывает на MySQL
+- Индексы: slug (unique), favorites (UserId + RestaurantId), reservations по ресторану/дате
+- JSON-колонки для типов кухни, особенностей, URL фото
+- Owned entities: Address, Contacts, MenuItem, OrderLine, OpeningHours
+- Optimistic concurrency через `UpdatedAtUtc` на ключевых агрегатах
+
+---
+
+## Тестирование
+
+| Слой | Что проверяется |
+|------|-----------------|
+| **Domain unit tests** | Правила публикации, суммы заказа, переходы бронирований, границы рейтинга, уникальность избранного |
 | **Architecture tests** | Domain ↛ Application/Infrastructure/Web; Application ↛ Infrastructure/Web |
-| **Integration tests** | Full HTTP pipeline through middleware to in-memory/SQLite database |
+| **Integration tests** | Полный HTTP-пайплайн через middleware до БД |
 
 ```powershell
 dotnet test RestaurantOrdersPlatform.sln
-# 12 tests: 9 domain + 2 architecture + 1 integration
+# 12 тестов: 9 domain + 2 architecture + 1 integration
 ```
 
 ---
 
-## Tech stack
+## Технологии
 
-| Component | Technology |
+| Компонент | Технология |
 |-----------|------------|
 | Runtime | .NET 8 |
-| HTTP | ASP.NET Core Middleware (no Controllers) |
+| HTTP | ASP.NET Core Middleware (без Controllers) |
 | Domain | DDD — Aggregates, Value Objects, Domain Events |
 | Application | CQRS handlers, Result pattern |
 | ORM | Entity Framework Core 8 |
-| Database | SQLite (default) / MySQL |
+| БД | SQLite (по умолчанию) / MySQL |
 | Auth | ASP.NET Identity (cookie) |
 | API docs | Swagger / OpenAPI |
-| Frontend | HTML, Tailwind CSS (CDN), Vanilla JS modules |
+| Frontend | HTML, Tailwind CSS (CDN), Vanilla JS modules, UI на русском |
 | Tests | xUnit, FluentAssertions, NetArchTest, WebApplicationFactory |
 
 ---
 
-## Design decisions (for review)
+## Архитектурные решения
 
-| Decision | Rationale |
-|----------|-----------|
-| **Middleware instead of Controllers** | Explicit HTTP pipeline control; business logic stays in Application/Domain |
-| **No MediatR** | Handlers registered in DI directly — less magic, easier to trace |
-| **No generic `IRepository<T>`** | Repositories reflect aggregate boundaries and real use cases |
-| **Separate read store** | Search/listing queries don't load full aggregates unnecessarily |
-| **Cookie auth over JWT** | Same-origin HTML frontend; simpler session model for demo/production monolith |
-| **Modular monolith** | Single deployable unit; clear layer boundaries enforced by architecture tests |
-| **Domain events without event bus** | Events raised on aggregates; ready for outbox/handlers later without premature complexity |
+| Решение | Обоснование |
+|---------|-------------|
+| **Middleware вместо Controllers** | Явный контроль HTTP-пайплайна; бизнес-логика остаётся в Application/Domain |
+| **Без MediatR** | Handlers регистрируются в DI напрямую — меньше магии, проще трассировка |
+| **Без generic `IRepository<T>`** | Репозитории отражают границы агрегатов и реальные сценарии |
+| **Отдельный read store** | Поиск и списки не загружают полные агрегаты без необходимости |
+| **Cookie auth вместо JWT** | Same-origin HTML frontend; проще модель сессий для монолита |
+| **Модульный монолит** | Один деплой; границы слоёв проверяются architecture-тестами |
+| **Domain events без event bus** | События на агрегатах; готовность к outbox/handlers позже без лишней сложности сейчас |
